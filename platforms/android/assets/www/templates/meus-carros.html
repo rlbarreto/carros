@@ -1,0 +1,75 @@
+<!-- 
+  This template gets placed in the Pet tab's <ion-nav-view> directive.
+  It was wired up in the app config (app.js) 
+  The 'pets' data comes from its $scope within PetIndexCtrl (controller.js)
+-->
+<ion-view title="Meus Carros">
+    <ion-content has-header="true" has-tabs="true">
+
+        <ion-list class="card">
+            <span data-ng-repeat="meuCarro in meusCarros" data-ng-click="alert('123')" >
+                <div class="item item-divider">
+                    {{ meuCarro.carroTransient.nome }} - {{meuCarro.carroTransient.motor}} - {{meuCarro.carroTransient.anoFabricacao}} / {{meuCarro.carroTransient.anoModelo}}
+                </div>
+                <div class="item item-body">
+                    <p><label>Tipo combustivel: </label>{{meuCarro.carroTransient.tipoCombustivel}}</p>
+                    <p><label>Consumo Medio ethanol: </label>{{meuCarro.consumeMedioEta}}</p>
+                    <p><label>Consumo Medio gasolina: </label>{{meuCarro.consumeMedioGas}}</p>
+                    <p><label>Odometro total: </label>{{meuCarro.odometroTotal}}</p>
+                </div>
+            </span>
+            <span>
+                <div class="item item-divider">
+                    Cadastrar
+                </div>
+                <div class="item item-body">
+                    <form data-ng-submit="salvarNovoCarro()">
+
+                        <div class="list">
+                            <button
+                                    class="button button-block button-light"
+                                    data-ng-bind="fabricanteSelecionado"
+                                    data-ng-click="openModalFabricante()">
+                            </button>
+
+                            <button
+                                    class="button button-block button-light"
+                                    data-ng-bind="carroSelecionado"
+                                    data-ng-click="openModalCarro()">
+                            </button>
+                            <label class="item item-input">
+                                <span class="input-label">Odômetro</span>
+                                <input type="text" data-ng-model="novoCarro.odometroTotal">
+                            </label>
+
+                            <span data-ng-show="novoCarro.carroTransient.volumeTanque">
+                                <span class="input-label">Tanque (litros)
+                                {{novoCarro.carroTransient.volumeTanque}}</span>
+
+                                <p>Tipo de combustivel: {{novoCarro.carroTransient.tipoCombustivel}}</p>
+
+                                <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0">Consumo Gasolina:
+                                    {{novoCarro.carroTransient.consumoMedioGas}}</p>
+
+                                <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0">Consumo Etanol:
+                                    {{novoCarro.carroTransient.consumoMedioEta}}</p>
+                            </span>
+                        </div>
+
+                        <!--p>Fabricante: <input type="text" ng-model="novoCarro.fabricanteTransient"
+                                              typeahead="fabricante as fabricante.nome for fabricante in fabricantes | filter:$viewValue"></p-->
+
+
+                        <p></p>
+                        <button class="button button-block button-dark" data-ng-click="inserirCarro()">
+                            Salvar
+                        </button>
+                    </form>
+                </div>
+
+            </span>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>

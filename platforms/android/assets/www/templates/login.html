@@ -1,0 +1,45 @@
+<ion-view title="'Login'">
+    <ion-content has-header="true" has-tabs="true" padding="true">
+        <img src="img/ionic.png" class="ionic-logo">
+        <p>
+            Colocando algo novo
+        </p>
+        <div id="login">
+            <a id="loginLink" >Sign In With Google!</a>
+            <p></p>
+        </div>
+        <google-login></google-login>
+        <script>
+            /*var googleapi = {
+                authorize: function(options) {
+                    var deferred = $.Deferred();
+                    deferred.reject({ error: 'Not Implemented' });
+                    return deferred.promise();
+                }
+            };
+
+            $(document).on('deviceready', function() {
+                var $loginButton = $('#login a');
+                var $loginStatus = $('#login p');
+
+                $loginButton.on('click',
+                    function() {
+                        googleapi.authorize({
+                            client_id: '415048123009-b53e9vs809b62ufui87vg2a717ml2br7.apps.googleusercontent.com',
+                            redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+                            scope: 'userinfo.profile plus.login'
+                        }).done(
+                            function(data) {
+                                $loginStatus.html('Access Token: ' + data.access_token);
+                            }
+                        ).fail(
+                            function(data) {
+                                $loginStatus.html(data.error);
+                            }
+                        );
+                    }
+                );
+            });*/
+        </script>
+    </ion-content>
+</ion-view>

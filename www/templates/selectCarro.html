@@ -1,0 +1,27 @@
+<div class="modal">
+    <ion-header-bar title="Carros" align-title="left">
+        <form ng-submit="pesquisarCarros(nomeCarro)">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios7-search placeholder-icon"></i>
+                <input type="search" placeholder="Search" data-ng-model="nomeCarro">
+            </label>
+            <button class="button button-light" data-ng-click="cancelarPesquisa()">
+                Cancel
+            </button>
+        </form>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list class="card">
+            <span data-ng-repeat="carro in carros"
+                       data-ng-click="selecionarCarro(carro)">
+                <div class="item item-divider">
+                    {{ carro.nome }} - {{carro.motor}} - {{carro.anoFabricacao}} / {{carro.anoModelo}}
+                </div>
+                <div class="item item-body">
+                    <label>Tipo combustivel: </label>{{carro.tipoCombustivel}}
+                </div>
+
+            </span>
+        </ion-list>
+    </ion-content>
+</div>
