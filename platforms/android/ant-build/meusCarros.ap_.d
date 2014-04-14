@@ -264,14 +264,11 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/about.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/loginPopup.html \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/tabs.html \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/pet-detail.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectFabricantes.html \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/meuCarroSelecionado.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/meus-carros.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectCarro.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/splashScreen.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/login.html \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/adopt.html \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/AndroidManifest.xml \

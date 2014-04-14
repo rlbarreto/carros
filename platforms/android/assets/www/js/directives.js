@@ -173,4 +173,22 @@ angular.module('starter.directives', [])
         link: link
       };
     }
+)
+.directive('focusOnShow',
+    function() {
+      "use strict";
+      var link = function (scope, element) {
+
+        scope.$on('OnShow',
+            function() {
+              element[0].focus();
+            }
+        );
+      };
+
+      return {
+          restrict: 'A',
+          link: link
+      }
+    }
 );

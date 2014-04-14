@@ -117,12 +117,13 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 )
 
 .controller('CarroCtrl',
-    ['$scope', '$ionicModal', 'CarroService', 'FabricanteService', 'UserService',
-      function ($scope, $ionicModal, CarroService, FabricanteService, UserService) {
+    ['$scope', '$ionicModal', 'CarroService', 'FabricanteService', '$state',
+      function ($scope, $ionicModal, CarroService, FabricanteService, $state) {
         console.log('entrou no carroCtrl');
 
         $scope.fabricanteSelecionado = 'Fabricantes';
         $scope.carros = CarroService.carros;
+        $scope.nomeCarro = '';
 
         $ionicModal.fromTemplateUrl('templates/selectFabricantes.html', {
           scope: $scope,
@@ -157,8 +158,10 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         }).then(function(modal) {
           $scope.modalCarro = modal;
         });
-        $scope.openModalCarro = function() {
-          $scope.modalCarro.show();
+        $scope.openModalCarro = function(fabricanteSelecionado) {
+          if (fabricanteSelecionado) {
+            $scope.modalCarro.show();
+          }
         };
         $scope.closeModalCarro = function() {
           $scope.modalCarro.hide();
@@ -195,13 +198,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           }
         });
 
-        $scope.adicionarAbastecimento = function () {
-          $scope.novoAbastecimento = CarroService.getNovoAbastecimento();
-        };
 
-        $scope.salvarAbastecimento = function (carro, abastecimento) {
-          CarroService.salvarAbastecimento(carro, abastecimento);
-        };
 
         $scope.pesquisarCarros = function (nomeCarro) {
           "use strict";
@@ -220,7 +217,43 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
         }
 
+        $scope.exibirMeuCarro = function (meuCarro) {
+          "use strict";
+          CarroService.meuCarroSelecionado = meuCarro;
+          $state.go('meuCarroSelecionado');
+        }
+
+        $scope.cancelarPesquisa = function () {
+          "use strict";
+          CarroService.carros.splice(0, CarroService.carros.length);
+        }
+
 
       }
+    ]
+)
+.controller('MeuCarroSelecionadoCtrl',
+    ['$scope', 'CarroService',
+        function($scope, CarroService) {
+          "use strict";
+
+          $scope.nomeAbastecimento = null;
+          $scope.meuCarroSelecionado = CarroService.meuCarroSelecionado;
+
+          $scope.abastecer = function() {
+            $scope.novoAbastecimento = CarroService.criarNovoAbastecimento();
+          }
+
+          $scope.salvarAbastecimento = function (carro, abastecimento) {
+
+            CarroService.salvarAbastecimento($scope.meuCarroSelecionado, $scope.novoAbastecimento);
+          };
+
+          $scope.cancelarAbastecimento = function() {
+            $scope.novoAbastecimento = null;
+          }
+
+        }
+
     ]
 );

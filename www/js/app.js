@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', 'starter.directives', 'starter.filters'],
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.filters'],
     function ($httpProvider) {
       // Use x-www-form-urlencoded Content-Type
       $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -70,54 +70,11 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', '
       templateUrl: 'templates/meus-carros.html',
       controller: 'CarroCtrl'
     })
-
-    // setup an abstract state for the tabs directive
-    /*.state('tab', {
-      url: "/tab",
-      abstract: true,
-      templateUrl: "templates/tabs.html"
-    })*/
-
-
-
-    .state('tab.login', {
-      url: "/login",
-      views: {
-        'login': {
-          templateUrl: 'templates/login.html',
-          controller: 'LoginCtrl'
-        }
-      }
-    })
-
-    // the pet tab has its own child nav-view and history
-    .state('tab.pet-detail', {
-      url: '/pet/:petId',
-      views: {
-        'pets-tab': {
-          templateUrl: 'templates/pet-detail.html',
-          controller: 'PetDetailCtrl'
-        }
-      }
-    })
-
-    .state('tab.adopt', {
-      url: '/adopt',
-      views: {
-        'adopt-tab': {
-          templateUrl: 'templates/adopt.html'
-        }
-      }
-    })
-
-    .state('tab.about', {
-      url: '/about',
-      views: {
-        'about-tab': {
-          templateUrl: 'templates/about.html'
-        }
-      }
-    });
+    .state('meuCarroSelecionado', {
+        url:"/meuCarroSelecionado",
+        templateUrl: 'templates/meuCarroSelecionado.html',
+        controller: 'MeuCarroSelecionadoCtrl'
+      });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');

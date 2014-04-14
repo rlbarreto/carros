@@ -141,8 +141,11 @@ angular.module('starter.services', ['ngResource'])
           CarroResource: $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params:{query:'adicionarAbastecimento'}}}),
           meusCarros: [],
           carros: [],
-          getNovoAbastecimento: function() {
-            return {edicao:true};
+          meuCarroSelecionado: {},
+          criarNovoAbastecimento: function() {
+            var novoAbastecimento = {edicao: true};
+            return novoAbastecimento;
+
           },
           getNovoCarro: function (userId) {
             return new carroService.CarroResource();
@@ -160,6 +163,12 @@ angular.module('starter.services', ['ngResource'])
                   carroService.meusCarros.splice(0, carroService.meusCarros.length);
                   carros.forEach(
                       function (carro) {
+                        carro.abastecimentos.forEach(
+                            function formatarDataAbastecimento(abastecimento) {
+                              var data = new Date(abastecimento.data);
+                              abastecimento.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
+                            }
+                        )
                         carroService.meusCarros.push(carro);
                       }
                   );
@@ -197,9 +206,6 @@ angular.module('starter.services', ['ngResource'])
             abastecimento.edicao = false;
             abastecimento.dateOrdenacao = new Date(abastecimento.data);
 
-            if (!carro.abastecimentos) {
-              carro.abastecimentos = [];
-            }
             carroService.CarroResource.abastecer({id: carro._id}, {abastecimento: abastecimento},
                 function (meuCarroSalvo) {
                   carro.odometroTotal = meuCarroSalvo.odometroTotal;

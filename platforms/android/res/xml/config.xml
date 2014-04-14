@@ -7,7 +7,7 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
-    <name>meusCarros</name>
+    <name>Meus Carros</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
