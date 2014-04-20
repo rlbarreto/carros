@@ -1,8 +1,8 @@
 angular.module('starter.controllers', ['ionic', 'starter.services'])
 
 .controller('MainCtrl',
-    ['$scope', 'DBService', '$ionicPopup', '$state', 'UserService',
-      function($scope, DBService, $ionicPopup, $state, UserService) {
+    ['$scope', 'DBService', '$ionicPopup', '$state', 'UserService', 'CarroService',
+      function($scope, DBService, $ionicPopup, $state, UserService, CarroService) {
         "use strict";
 
         var popupLogin;
@@ -70,8 +70,13 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           if(popupLogin) {
             popupLogin.close();
           }
-          console.log('indo para o state meusCarros');
-          $state.go('meusCarros');
+          var meusCarros = CarroService.getMeusCarros();
+          if (meusCarros.length > 0) {
+            console.log('indo para o state meusCarros');
+            $state.go('meusCarros');
+          } else {
+            $state.go('meusCarros');
+          }
         });
 
         var preencherUsuario = function (tx, results) {
@@ -233,8 +238,8 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
     ]
 )
 .controller('MeuCarroSelecionadoCtrl',
-    ['$scope', 'CarroService',
-        function($scope, CarroService) {
+    ['$scope', 'CarroService', '$state',
+        function($scope, CarroService, $state) {
           "use strict";
 
           $scope.nomeAbastecimento = null;

@@ -74,6 +74,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
         url:"/meuCarroSelecionado",
         templateUrl: 'templates/meuCarroSelecionado.html',
         controller: 'MeuCarroSelecionadoCtrl'
+    })
+    .state('abastecer', {
+        url:"/abastecer",
+        templateUrl:'<h1>My Contacts</h1>',
+        controller: 'MeuCarroSelecionadoCtrl'
       });
 
   // if none of the above states are matched, use this as the fallback

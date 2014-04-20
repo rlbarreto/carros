@@ -1,0 +1,28 @@
+<ion-view title="Abastecer - {{meuCarroSelecionado.carroTransient.fabricanteTransient.nome}} - {{meuCarroSelecionado.carroTransient.nome}}">
+    <ion-content has-header="true" has-tabs="true">
+        <div class="item item-body">
+            <form ng-submit="salvarAbastecimento(meuCarroSelecionado, novoAbastecimento)">
+                <label class="item item-input">
+                    <span class="input-label">Data:</span>
+                    <input type="date" ng-model="novoAbastecimento.data">
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Odometro:</span>
+                    <input type="number" ng-model="novoAbastecimento.odometro">
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Volume:</span>
+                    <input type="number" ng-model="novoAbastecimento.volume">
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Tipo de Combustivel:</span>
+                    <input type="text" ng-model="novoAbastecimento.tipo">
+                </label>
+
+            </form>
+        </div>
+    </ion-content>
+</ion-view>

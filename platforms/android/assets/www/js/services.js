@@ -1,29 +1,19 @@
 angular.module('starter.services', ['ngResource'])
+/*.config(
+    function (RestangularProvider) {
+      "use strict";
+      RestangularProvider.addElementTransformer('meusCarros', true, function(user) {
+        // This will add a method called login that will do a POST to the path login
+        // signature is (name, operation, path, params, headers, elementToPost)
 
-/**
- * A simple example service that returns some data.
- */
-.factory('PetService', function() {
-  // Might use a resource here that returns a JSON array
 
-  // Some fake testing data
-  var pets = [
-    { id: 0, title: 'Cats', description: 'Furry little creatures. Obsessed with plotting assassination, but never following through on it.' },
-    { id: 1, title: 'Dogs', description: 'Lovable. Loyal almost to a fault. Smarter than they let on.' },
-    { id: 2, title: 'Turtles', description: 'Everyone likes turtles.' },
-    { id: 3, title: 'Sharks', description: 'An advanced pet. Needs millions of gallons of salt water. Will happily eat you.' }
-  ];
+        user.addRestangularMethod('login', 'post', 'login');
 
-  return {
-    all: function() {
-      return pets;
-    },
-    get: function(petId) {
-      // Simple index lookup
-      return pets[petId];
+        return user;
+      });
+
     }
-  }
-})
+)*/
 .factory('UserService', function() {
       "use strict";
       var usuario;
@@ -135,10 +125,24 @@ angular.module('starter.services', ['ngResource'])
     ['$http', '$resource', '$q', 'UserService','LoadingService',
       function CarroService($http, $resource, $q, UserService, LoadingService) {
         "use strict";
-        console.log('userId ' + UserService.getUsuario()._id);
+        //console.log('userId ' + UserService.getUsuario()._id);
+
+        //var api = Restangular.allUrl('api', 'https://meuscarros.jit.su/api');
+        //var todosCarros = api.all('carros');
+
+        var TodosCarrosResource = $resource('https://meuscarros.jit.su/api/carros/:query', {query:'@query'});
+        //var TodosCarrosResource = todosCarros;
+        var CarroResource;
+        var getCarroResource = function (){
+          if (!CarroResource) {
+            //CarroResource = api.one(UserService.getUsuario()._id).getList('meusCarros');
+            CarroResource = $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params: {query: 'adicionarAbastecimento'}}});
+          }
+          return CarroResource;
+        }
+
         var carroService = {
-          TodosCarrosResource: $resource('https://meuscarros.jit.su/api/carros/:query', {query:'@query'}),
-          CarroResource: $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params:{query:'adicionarAbastecimento'}}}),
+
           meusCarros: [],
           carros: [],
           meuCarroSelecionado: {},
@@ -148,7 +152,7 @@ angular.module('starter.services', ['ngResource'])
 
           },
           getNovoCarro: function (userId) {
-            return new carroService.CarroResource();
+            return new CarroResource();
           },
           getMeusCarros: function () {
             /*$http.get('/api/1/meusCarros').success(function(carros) {
@@ -156,7 +160,8 @@ angular.module('starter.services', ['ngResource'])
              });*/
             console.log(UserService.getUsuario());
             LoadingService.showLoading();
-            var carrosPromise = carroService.CarroResource.query({userId: UserService.getUsuario()._id}).$promise;
+            var carrosPromise = getCarroResource().query({userId: UserService.getUsuario()._id}).$promise;
+            //var carrosPromise = getCarroResource().$promise;
             carrosPromise.then(
                 function (carros) {
                   console.log('funcionou com o resource');
@@ -206,14 +211,16 @@ angular.module('starter.services', ['ngResource'])
             abastecimento.edicao = false;
             abastecimento.dateOrdenacao = new Date(abastecimento.data);
 
-            carroService.CarroResource.abastecer({id: carro._id}, {abastecimento: abastecimento},
+            getCarroResource().abastecer({id: carro._id}, {abastecimento: abastecimento},
                 function (meuCarroSalvo) {
                   carro.odometroTotal = meuCarroSalvo.odometroTotal;
                   carro.ultimoAbastecimentoData = meuCarroSalvo.ultimoAbastecimentoData;
                   carro.consumoMedioGas = meuCarroSalvo.consumoMedioGas;
                   carro.consumoMedioEta = meuCarroSalvo.consumoMedioEta;
-
-                  carro.abastecimentos.push(meuCarroSalvo.abastecimentos[meuCarroSalvo.abastecimentos.length - 1]);
+                  var abastecimentoSalvo = meuCarroSalvo.abastecimentos[meuCarroSalvo.abastecimentos.length - 1]
+                  var data = new Date(abastecimentoSalvo.data);
+                  abastecimentoSalvo.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
+                  carro.abastecimentos.push(abastecimentoSalvo);
                 }
             );
           },
@@ -244,7 +251,7 @@ angular.module('starter.services', ['ngResource'])
             if (!nomeCarro || nomeCarro.length === 0) {
               carroService.carros.splice(0, carroService.carros.length);
             } else {
-              var carroPromise = carroService.TodosCarrosResource.query({query: 'listarCarros', fabricanteId: fabricanteId, nomeCarro: nomeCarro}).$promise;
+              var carroPromise = TodosCarrosResource.query({query: 'listarCarros', fabricanteId: fabricanteId, nomeCarro: nomeCarro}).$promise;
               carroPromise.then(
                   function getCarrosFabricante(result) {
                     result.forEach(
