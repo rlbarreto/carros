@@ -155,11 +155,12 @@ angular.module('starter.services', ['ngResource'])
             return new CarroResource();
           },
           getMeusCarros: function () {
-            /*$http.get('/api/1/meusCarros').success(function(carros) {
-             $.merge(carroService.meusCarros, carros);
-             });*/
+            var deferred = $q.defer();
             console.log(UserService.getUsuario());
-            LoadingService.showLoading();
+            if(carroService.meusCarros && carroService.meusCarros.length > 0) {
+              deferred.resolve(carroService.meusCarros);
+              return deferred.promise;
+            }
             var carrosPromise = getCarroResource().query({userId: UserService.getUsuario()._id}).$promise;
             //var carrosPromise = getCarroResource().$promise;
             carrosPromise.then(
@@ -174,16 +175,20 @@ angular.module('starter.services', ['ngResource'])
                               abastecimento.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
                             }
                         )
+
                         carroService.meusCarros.push(carro);
+                        if (carroService.meusCarros.length == carros.length) {
+                          deferred.resolve(carroService.meusCarros);
+                        }
                       }
                   );
+                  carroService.meusCarros = carros;
+                  deferred.resolve(carroService.meusCarros);
                 }
             );
             carrosPromise.catch(
                 function(err) {
-                  if (err) {
-                    console.log('erro')
-                  };
+                  deferred.reject(err);
                 }
             );
             carrosPromise.finally(
@@ -198,7 +203,9 @@ angular.module('starter.services', ['ngResource'])
                   LodingService.hideLoading();
                 }
             );*/
-            return carroService.meusCarros;
+            //carroService.meusCarros = deferred.promise;
+            LoadingService.showLoading();
+            return deferred.promise;
           },
 
           adicionarAbastecimento: function (carro) {

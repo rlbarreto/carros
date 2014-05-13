@@ -50,18 +50,18 @@
         </div>
     </div>
     </ion-content>
-    <ion-footer-bar>
-        <div class="buttons" style="height: 100%;width: 100%" ng-hide="novoAbastecimento.edicao">
-            <button class="button" style="height:100%; width:98%" data-ng-click="abastecer(meuCarroSelecionado)" >
+    <ion-footer-bar class="bar-footer-bottom">
+        <div class="buttons buttons-footer" ng-hide="novoAbastecimento.edicao">
+            <button class="button button-footer" data-ng-click="abastecer(meuCarroSelecionado)" >
                 Abastecer
             </button>
         </div>
-        <div class="buttons" style="height: 100%;width: 100%; text-align: center" ng-show="novoAbastecimento.edicao">
-            <button class="button" style="height:100%; width:48%" data-ng-click="salvarAbastecimento()">
+        <div class="buttons buttons-footer" ng-show="novoAbastecimento.edicao">
+            <button class="button button-footer half" data-ng-click="salvarAbastecimento()">
                 Salvar
             </button>
 
-            <button class="button" style="height:100%; width:48%" data-ng-click="cancelarAbastecimento()">
+            <button class="button button-footer half" data-ng-click="cancelarAbastecimento()">
                 Cancelar
             </button>
         </div>

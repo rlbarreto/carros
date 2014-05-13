@@ -6,3 +6,22 @@
   width: 96px;
   height: 96px;
 }
+
+.bar-footer-bottom {
+    height: 80px !important;
+ }
+
+.buttons-footer {
+    height: 95%;
+    width: 100%;
+    text-align: center;
+}
+
+.button-footer {
+    height:100%;
+    width:98%
+}
+
+.half {
+    width:48% !important;
+}

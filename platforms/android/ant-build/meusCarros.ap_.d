@@ -486,7 +486,6 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectFabricantes.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/meuCarroSelecionado.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/meus-carros.html \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/meuCarro.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectCarro.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/splashScreen.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/login.html \

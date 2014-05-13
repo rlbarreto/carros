@@ -13,17 +13,13 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
         $scope.closeSideMenuMeusCarros = function() {
           $state.go('meusCarros');
-          $scope.closeSideMenu();
+          $scope.toggleLeft();
         }
 
         $scope.closeSideMenuCadastrar = function() {
           $state.go('cadastrarCarro');
-          $scope.closeSideMenu();
+          $scope.toggleLeft();
         }
-
-        $scope.closeSideMenu = function() {
-          $ionicSideMenuDelegate.toggleLeft();
-        };
 
         //criando a modal de login
         $ionicModal.fromTemplateUrl('templates/loginPopup.html', {
@@ -201,7 +197,17 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           $scope.modalCarro.remove();
         });
 
-        $scope.meusCarros = CarroService.getMeusCarros();
+        CarroService.getMeusCarros().then(function (meusCarros) {
+          "use strict";
+          $scope.meusCarros = meusCarros;
+        }).catch(function (err) {
+          "use strict";
+          console.log('ocorreu um erro');
+        }).finally(function () {
+          "use strict";
+          logger.debug('carregou meus carros');
+        });
+
         logger.debug($scope.meusCarros);
 
         $scope.novoCarro = CarroService.getNovoCarro();
@@ -266,12 +272,12 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           $scope.salvarAbastecimento = function (carro, abastecimento) {
 
             CarroService.salvarAbastecimento($scope.meuCarroSelecionado, $scope.novoAbastecimento);
-            $state.go('meusCarros');
+            $state.go('^.meuCarro');
           };
 
           $scope.cancelarAbastecimento = function() {
             $scope.novoAbastecimento = {};
-            $state.go('meusCarros');
+            $state.go('^.meuCarro');
           }
 
           //$state.go('meuCarroSelecionado.meuCarro')
