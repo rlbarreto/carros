@@ -1,0 +1,59 @@
+<ion-view title="Novo Carro">
+    <ion-content has-header="true" padding="true">
+        <div>
+            <form name="novoCarroForm" data-ng-submit="salvarNovoCarro()" novalidate>
+
+                <!--<div class="list">-->
+                    <button
+                            class="button button-block button-light"
+                            data-ng-bind="cadastro.fabricanteSelecionado"
+                            data-ng-click="openModalFabricante()">
+                    </button>
+
+                    <button data-ng-if="!cadastro.carroSelecionado"
+                            class="button button-block button-light"
+                            data-ng-click="openModalCarro(novoCarro.fabricanteTransient)">Carros
+                    </button>
+                    <span class="card" data-ng-if="cadastro.carroSelecionado">
+                        <div class="item item-divider">
+                            {{cadastro.carroSelecionado}}
+                        </div>
+                        <span data-ng-show="novoCarro.carroTransient.volumeTanque" class="item item-body">
+                            <span class="input-label">Tanque (litros)
+                            {{novoCarro.carroTransient.volumeTanque}}</span>
+
+                            <p>Tipo de combustivel: {{novoCarro.carroTransient.tipoCombustivel}}</p>
+
+                            <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0">Consumo Gasolina:
+                                {{novoCarro.carroTransient.consumoMedioGas}}</p>
+
+                            <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0">Consumo Etanol:
+                                {{novoCarro.carroTransient.consumoMedioEta}}</p>
+                        </span>
+                    </span>
+
+                    <label class="item item-input">
+                        <span class="input-label">Odômetro</span>
+                        <input type="number" data-ng-model="novoCarro.odometroTotal" required>
+                    </label>
+
+
+                <!--</div>-->
+
+                <!--p>Fabricante: <input type="text" ng-model="novoCarro.fabricanteTransient"
+                                      typeahead="fabricante as fabricante.nome for fabricante in fabricantes | filter:$viewValue"></p-->
+
+
+                <!--<p></p>-->
+
+            </form>
+        </div>
+    </ion-content>
+    <ion-footer-bar>
+        <div class="buttons" style="height: 100%;width: 100%">
+            <button class="button" style="height:100%; width:98%" data-ng-click="inserirCarro()" >
+                Salvar
+            </button>
+        </div>
+    </ion-footer-bar>
+</ion-view>

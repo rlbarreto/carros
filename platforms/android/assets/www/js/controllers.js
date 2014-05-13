@@ -1,132 +1,144 @@
 angular.module('starter.controllers', ['ionic', 'starter.services'])
 
 .controller('MainCtrl',
-    ['$scope', 'DBService', '$ionicPopup', '$state', 'UserService', 'CarroService',
-      function($scope, DBService, $ionicPopup, $state, UserService, CarroService) {
+    ['$scope', 'DBService', '$state', 'UserService', 'CarroService', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPlatform', '$log',
+      function($scope, DBService, $state, UserService, CarroService, $ionicSideMenuDelegate, $ionicModal, $ionicPlatform, $log) {
         "use strict";
 
-        var popupLogin;
+        var logger = $log;
+
+        var modalLogin;
 
         var isBrowser = false;
 
-        var showPopup = function() {
-          console.debug('vai chamar para exibir a popup ' + $ionicPopup);
-          console.debug($ionicPopup);
+        $scope.closeSideMenuMeusCarros = function() {
+          $state.go('meusCarros');
+          $scope.closeSideMenu();
+        }
 
-          if(!isBrowser) {
-            $ionicPopup.show({
-              templateUrl: 'templates/loginPopup.html',
-              scope: $scope
-            })
-                .then(
-                function (res) {
+        $scope.closeSideMenuCadastrar = function() {
+          $state.go('cadastrarCarro');
+          $scope.closeSideMenu();
+        }
 
-                },
-                function (err) {
-
-                },
-                function (popup) {
-                  popupLogin = popup;
-                }
-            );
-          }
+        $scope.closeSideMenu = function() {
+          $ionicSideMenuDelegate.toggleLeft();
         };
 
+        //criando a modal de login
+        $ionicModal.fromTemplateUrl('templates/loginPopup.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function(modal) {
+          modalLogin = modal;
+        });
+        var openModalLogin = function() {
+          modalLogin.show();
+        };
+        var closeModalLogin = function() {
+          if (modalLogin) {
+            modalLogin.hide();
+          }
+        };
+        $scope.$on('$destroy', function() {
+          modalLogin.remove();
+        });
+
         $scope.$on('eventEfetuarLogin', function (e) {
-          console.debug('pegou o evento');
-          showPopup();
+          logger.debug('pegou o evento');
+          openModalLogin();
         });
 
         window.addEventListener('storage', function(e) {
-          console.log('começando');
-          console.log(e);
-          console.log('inicializado do storage '+ window.localStorage.getItem('id'));
+          logger.debug('começando');
+          logger.debug(e);
+          logger.debug('inicializado do storage '+ window.localStorage.getItem('id'));
           inicializar();
         });
         var userid;
         var inicializar = function () {
+         // isBrowser = !$ionicPlatform.isWebView();
           DBService.inicializar(
               function () {
-                DBService.executarSelect('SELECT ID, BODY FROM usuario', [], preencherUsuario, function(err) { alert('erro'); });
+                DBService.executarSelect('SELECT ID, BODY FROM usuario', [], preencherUsuario,
+                    function(err) {
+                      logger.error(err);
+                      alert('erro');
+                    }
+                );
               }
           );
-          //console.log('meusCarros inicializar ' + window.localStorage);
-          //userid = window.localStorage.getItem('userid');
-          //console.log('o q achou no storage: ' + userid);
-          //preencherUsuario();
         };
 
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        $ionicPlatform.ready(inicializar);
+        /*if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
           document.addEventListener('deviceready', inicializar, false);
         } else {
           inicializar();
           isBrowser = true;
-        }
+        }*/
 
 
         $scope.$on('eventLoginSuccess', function(e, data) {
-          console.log('pegou o evento ' + JSON.stringify(data));
+          logger.debug('pegou o evento ' + JSON.stringify(data));
           UserService.setUsuario(data);
-          if(popupLogin) {
-            popupLogin.close();
-          }
+          //if(modalLogin) {
+          closeModalLogin();
+          //}
           var meusCarros = CarroService.getMeusCarros();
           if (meusCarros.length > 0) {
-            console.log('indo para o state meusCarros');
+            logger.debug('indo para o state meusCarros');
             $state.go('meusCarros');
           } else {
+            logger.debug('indo para o state meusCarros pelo else');
             $state.go('meusCarros');
           }
         });
 
         var preencherUsuario = function (tx, results) {
-          console.log(results.rows.length);
+          logger.debug(results.rows.length);
           if (results.rows.length > 0) {
             userid = results.rows.item(0).id;
-            console.log('carregou do database userid=' + userid);
+            logger.debug('carregou do database userid=' + userid);
           }
-          console.log('preencherUsuario1');
+          logger.debug('preencherUsuario1');
           var userId = userid;
 
-          console.log('userId ' + userId);
+          logger.debug('userId ' + userId);
           //userId = 1;
           if (userId) {
             $scope.$broadcast('eventLoginSuccess', {_id: userId});
           } else {
-            console.log('entrou');
-            console.debug('vai enviar msg de evento');
+            logger.debug('entrou');
+            logger.debug('vai enviar msg de evento');
             $scope.$broadcast('eventEfetuarLogin');
-            console.debug('enviada msg de evento');
+            logger.debug('enviada msg de evento');
           }
+        };
+
+        $scope.toggleLeft = function() {
+          $ionicSideMenuDelegate.toggleLeft();
         };
       }
     ]
 )
 
-
-// A simple controller that fetches a list of data from a service
-.controller('MeusCarrosCtrl', function($scope, PetService) {
-  // "Pets" is a service returning mock data (services.js)
-  $scope.pets = PetService.all();
-})
-
-
-// A simple controller that shows a tapped item's data
-.controller('PetDetailCtrl',
-    ['$scope', '$stateParams', 'PetService',
-      function($scope, $stateParams, PetService) {
-        // "Pets" is a service rwieturning mock data (services.js)
-        $scope.pet = PetService.get($stateParams.petId);
-      }
-    ]
-)
-
 .controller('CarroCtrl',
-    ['$scope', '$ionicModal', 'CarroService', 'FabricanteService', '$state',
-      function ($scope, $ionicModal, CarroService, FabricanteService, $state) {
-        console.log('entrou no carroCtrl');
+    ['$scope', '$ionicModal', 'CarroService', 'FabricanteService', '$state', '$log', 'LoadingService',
+      function ($scope, $ionicModal, CarroService, FabricanteService, $state, $log, LoadingService) {
 
-        $scope.fabricanteSelecionado = 'Fabricantes';
+        var logger = $log;
+
+        logger.debug('entrou no carroCtrl');
+
+        $scope.cadastro = {
+          fabricanteSelecionado: 'Fabricante',
+          carroSelecionado: null,
+          nomeCarro: null
+        };
+
+        //$scope.fabricanteSelecionado = 'Fabricante';
+        //$scope.carroSelecionado = null;
         $scope.carros = CarroService.carros;
         $scope.nomeCarro = '';
 
@@ -150,9 +162,9 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           "use strict";
           if ($scope.novoCarro.fabricanteTransient) {
             $scope.carros.splice(0, $scope.carros.length);
-            $scope.fabricanteSelecionado = $scope.novoCarro.fabricanteTransient.nome;
+            $scope.cadastro.fabricanteSelecionado = $scope.novoCarro.fabricanteTransient.nome;
           } else {
-            $scope.fabricanteSelecionado = 'Fabricantes';
+            $scope.cadastro.fabricanteSelecionado = 'Fabricante';
           }
           $scope.closeModalFabricantes();
         }
@@ -176,9 +188,9 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           "use strict";
           if (carroSelecionado) {
             $scope.novoCarro.carroTransient = carroSelecionado;
-            $scope.carroSelecionado = $scope.novoCarro.carroTransient.nome;
+            $scope.cadastro.carroSelecionado = $scope.novoCarro.carroTransient.nome;
           } else {
-            $scope.carroSelecionado = 'Carros';
+            //$scope.cadastro.carroSelecionado = 'Carros';
           }
           $scope.closeModalCarro();
         }
@@ -190,20 +202,10 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         });
 
         $scope.meusCarros = CarroService.getMeusCarros();
-        console.log($scope.meusCarros);
+        logger.debug($scope.meusCarros);
 
         $scope.novoCarro = CarroService.getNovoCarro();
         $scope.fabricantes = [];
-
-
-        $scope.meusCarros.forEach(function(carro) {
-          if (carro._id === 0) {
-            $scope.carroSelecionado = carro;
-            $scope.idCarroSelecionado = carro._id;
-          }
-        });
-
-
 
         $scope.pesquisarCarros = function (nomeCarro) {
           "use strict";
@@ -212,11 +214,22 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
         $scope.inserirCarro = function () {
           "use strict";
+
+          LoadingService.showLoading();
+
           var salvarPromise = CarroService.salvarNovoCarro($scope.novoCarro);
-          salvarPromise.success(
+          salvarPromise.then(
+              function(err) {
+                LoadingService.hideLoading();
+                logger.error('Ocorreu um erro ao salvar o carro: ' + err);
+
+              },
               function (msg) {
-                console.log(msg);
+                logger.debug(msg);
                 $scope.novoCarro = CarroService.getNovoCarro();
+                LoadingService.hideLoading();
+                $state.go('^.meusCarros')
+
               }
           )
 
@@ -225,7 +238,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         $scope.exibirMeuCarro = function (meuCarro) {
           "use strict";
           CarroService.meuCarroSelecionado = meuCarro;
-          $state.go('meuCarroSelecionado');
+          $state.go('meuCarroSelecionado.meuCarro');
         }
 
         $scope.cancelarPesquisa = function () {
@@ -238,26 +251,30 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
     ]
 )
 .controller('MeuCarroSelecionadoCtrl',
-    ['$scope', 'CarroService', '$state',
-        function($scope, CarroService, $state) {
+    ['$scope', 'CarroService', '$state', '$ionicTabsDelegate',
+        function($scope, CarroService, $state, $ionicTabsDelegate) {
           "use strict";
 
-          $scope.nomeAbastecimento = null;
+          $scope.novoAbastecimento = null;
           $scope.meuCarroSelecionado = CarroService.meuCarroSelecionado;
 
           $scope.abastecer = function() {
             $scope.novoAbastecimento = CarroService.criarNovoAbastecimento();
+            $state.go('^.abastecer');
           }
 
           $scope.salvarAbastecimento = function (carro, abastecimento) {
 
             CarroService.salvarAbastecimento($scope.meuCarroSelecionado, $scope.novoAbastecimento);
+            $state.go('meusCarros');
           };
 
           $scope.cancelarAbastecimento = function() {
-            $scope.novoAbastecimento = null;
+            $scope.novoAbastecimento = {};
+            $state.go('meusCarros');
           }
 
+          //$state.go('meuCarroSelecionado.meuCarro')
         }
 
     ]

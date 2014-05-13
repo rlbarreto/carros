@@ -74,7 +74,7 @@ angular.module('starter.services', ['ngResource'])
 
       var dbErrorHandler = function (tx, err) {
         console.log(JSON.stringify(err));
-        alert('DB error: ' + err.message + '\nCode: ' + err.code);
+        alert('DB error: ' + err + '\nCode: ' + err);
       };
 
       var inicializar = function (callback) {
@@ -89,7 +89,7 @@ angular.module('starter.services', ['ngResource'])
       var executarInsert = function (sqlInsert, params, callback) {
         db.transaction(function (tx) {
           console.log('executarInsert');
-          isTableExists(tx, 'usuario', function (a) { alert('tabela existe? '+ a)});
+          //isTableExists(tx, 'usuario', function (a) { alert('tabela existe? '+ a)});
           tx.executeSql(sqlInsert, params)
         }, callback, dbErrorHandler);
       };
@@ -102,9 +102,9 @@ angular.module('starter.services', ['ngResource'])
 
 
       var setValue = function (nome, valor) {
-        alert('colocando ' + nome + ' '+ valor);
+        //alert('colocando ' + nome + ' '+ valor);
         window.localStorage.setItem( 'item_name', item_value);
-        alert('colocou ');
+        //alert('colocou ');
       };
 
       var getValue = function (nome) {

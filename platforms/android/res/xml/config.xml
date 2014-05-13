@@ -9,16 +9,25 @@
     </feature>
     <name>Meus Carros</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Aplicação para calculo de consumo de combustivel pelo carro.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="rafael@navesbarreto.com">
+        Rafael Lessa Barreto
     </author>
     <content src="index.html" />
+    <feature name="Keyboard">
+        <param name="android-package" value="com.ionic.keyboard.IonicKeyboard" />
+        <param name="onload" value="true" />
+        <param name="ios-package" onload="true" value="IonicKeyboard" />
+    </feature>
     <plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
     <access browserOnly="true" origin="*" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="fade-splash-screen-duration" value="5" />
 </widget>

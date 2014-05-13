@@ -70,16 +70,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
       templateUrl: 'templates/meus-carros.html',
       controller: 'CarroCtrl'
     })
+    .state('cadastrarCarro', {
+      url: "/cadastrarCarro",
+      templateUrl: 'templates/cadastrar.html',
+      controller: 'CarroCtrl'
+    })
     .state('meuCarroSelecionado', {
         url:"/meuCarroSelecionado",
         templateUrl: 'templates/meuCarroSelecionado.html',
+        abstract:true,
         controller: 'MeuCarroSelecionadoCtrl'
     })
-    .state('abastecer', {
-        url:"/abastecer",
-        templateUrl:'<h1>My Contacts</h1>',
-        controller: 'MeuCarroSelecionadoCtrl'
-      });
+    .state('meuCarroSelecionado.meuCarro', {
+        url:'/meuCarro',
+        controller: function($scope) {
+          "use strict";
+          if (!$scope.novoAbastecimento) {
+            $scope.novoAbastecimento = {};
+          }
+
+          $scope.novoAbastecimento.edicao = false;
+        }
+      }
+    )
+    .state('meuCarroSelecionado.abastecer', {
+        url:'/abastecer',
+        controller: function($scope) {
+          "use strict";
+          if (!$scope.novoAbastecimento) {
+            $scope.novoAbastecimento = {};
+          }
+
+          $scope.novoAbastecimento.edicao = true;
+        }
+      }
+    );
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');
