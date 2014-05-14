@@ -7,6 +7,15 @@
   height: 96px;
 }
 
+.card-button.ion-edit:before {
+    font-size: 18px !important;
+}
+
+.card-button {
+    float: right;
+    border-color: darkgray;
+}
+
 .bar-footer-bottom {
     height: 80px !important;
  }

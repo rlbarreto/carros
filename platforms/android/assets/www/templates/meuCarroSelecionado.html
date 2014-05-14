@@ -23,7 +23,12 @@
 
                 <label class="item item-input">
                     <span class="input-label">Tipo de Combustivel:</span>
-                    <input type="text" ng-model="novoAbastecimento.tipo">
+                    <select ng-model="novoAbastecimento.tipo">
+                        <option value=""></option>
+                        <option value="Gasolina">Gasolina</option>
+                        <option value="Etanol">Etanol</option>
+
+                    </select>
                 </label>
 
             </form>

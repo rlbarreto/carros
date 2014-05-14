@@ -5,37 +5,40 @@
 
                 <!--<div class="list">-->
                     <button
-                            class="button button-block button-light"
+                            class="button button-block button-light button-large"
                             data-ng-bind="cadastro.fabricanteSelecionado"
                             data-ng-click="openModalFabricante()">
                     </button>
 
                     <button data-ng-if="!cadastro.carroSelecionado"
-                            class="button button-block button-light"
+                            class="button button-block button-light button-large"
                             data-ng-click="openModalCarro(novoCarro.fabricanteTransient)">Carros
                     </button>
-                    <span class="card" data-ng-if="cadastro.carroSelecionado">
+                    <span class="card"
+                          data-ng-if="cadastro.carroSelecionado"
+                          data-ng-click="openModalCarro(novoCarro.fabricanteTransient)">
                         <div class="item item-divider">
                             {{cadastro.carroSelecionado}}
+                            <button class="button button-icon icon card-button ion-edit button-small"
+                                    data-ng-click="openModalCarro(novoCarro.fabricanteTransient)"></button>
                         </div>
                         <span data-ng-show="novoCarro.carroTransient.volumeTanque" class="item item-body">
-                            <span class="input-label">Tanque (litros)
-                            {{novoCarro.carroTransient.volumeTanque}}</span>
+                            <p>Tanque (litros): {{novoCarro.carroTransient.volumeTanque}}</p>
 
                             <p>Tipo de combustivel: {{novoCarro.carroTransient.tipoCombustivel}}</p>
 
-                            <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0">Consumo Gasolina:
-                                {{novoCarro.carroTransient.consumoMedioGas}}</p>
+                            <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0">Consumo Gasolina: {{novoCarro.carroTransient.consumoMedioGas}}</p>
 
-                            <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0">Consumo Etanol:
-                                {{novoCarro.carroTransient.consumoMedioEta}}</p>
+                            <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0">Consumo Etanol: {{novoCarro.carroTransient.consumoMedioEta}}</p>
                         </span>
                     </span>
-
-                    <label class="item item-input">
-                        <span class="input-label">Odômetro</span>
-                        <input type="number" data-ng-model="novoCarro.odometroTotal" required>
-                    </label>
+                    <div style="padding-bottom: 40px">
+                        <label class="item item-input" >
+                            <span class="input-label">Odômetro</span>
+                            <input type="number" data-ng-model="novoCarro.odometroTotal" required>
+                        </label>
+                    </div>
+                <!--div style="height: 25px">&nbsp;</div-->
 
 
                 <!--</div>-->
@@ -49,9 +52,9 @@
             </form>
         </div>
     </ion-content>
-    <ion-footer-bar>
-        <div class="buttons" style="height: 100%;width: 100%">
-            <button class="button" style="height:100%; width:98%" data-ng-click="inserirCarro()" >
+    <ion-footer-bar class="bar-footer-bottom">
+        <div class="buttons buttons-footer">
+            <button class="button button-footer" data-ng-click="inserirCarro()" >
                 Salvar
             </button>
         </div>

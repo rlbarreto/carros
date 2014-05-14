@@ -489,5 +489,4 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectCarro.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/splashScreen.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/login.html \
-/home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/abastecer.html \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/AndroidManifest.xml \

@@ -157,8 +157,11 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         $scope.selecionarFabricante = function() {
           "use strict";
           if ($scope.novoCarro.fabricanteTransient) {
-            $scope.carros.splice(0, $scope.carros.length);
-            $scope.cadastro.fabricanteSelecionado = $scope.novoCarro.fabricanteTransient.nome;
+            if ($scope.cadastro.fabricanteSelecionado != $scope.novoCarro.fabricanteTransient.nome) {
+              $scope.carros.splice(0, $scope.carros.length);
+              $scope.cadastro.carroSelecionado = null;
+              $scope.cadastro.fabricanteSelecionado = $scope.novoCarro.fabricanteTransient.nome;
+            }
           } else {
             $scope.cadastro.fabricanteSelecionado = 'Fabricante';
           }
@@ -185,8 +188,6 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           if (carroSelecionado) {
             $scope.novoCarro.carroTransient = carroSelecionado;
             $scope.cadastro.carroSelecionado = $scope.novoCarro.carroTransient.nome;
-          } else {
-            //$scope.cadastro.carroSelecionado = 'Carros';
           }
           $scope.closeModalCarro();
         }
@@ -271,7 +272,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
           $scope.salvarAbastecimento = function (carro, abastecimento) {
 
-            CarroService.salvarAbastecimento($scope.meuCarroSelecionado, $scope.novoAbastecimento);
+            CarroService.salvarAbastecimento(carro, abastecimento);
             $state.go('^.meuCarro');
           };
 
