@@ -24,7 +24,7 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
   this._scrollViewOptions = scrollViewOptions; //for testing
 
   var element = this.element = scrollViewOptions.el;
-  var $element = this.$element = angular.element(element);
+  var $element = this.$element = jqLite(element);
   var scrollView = this.scrollView = new ionic.views.Scroll(scrollViewOptions);
 
   //Attach self to element as a controller so other directives can require this controller
@@ -51,6 +51,7 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
 
   $scope.$on('$destroy', function() {
     deregisterInstance();
+    scrollView.__removeEventHandlers();
     ionic.off('resize', resize, $window);
     $window.removeEventListener('resize', resize);
     backListenDone();
@@ -164,8 +165,6 @@ function($scope, scrollViewOptions, $timeout, $window, $$scrollValueCache, $loca
       });
     }
   };
-
-
 
   /**
    * @private

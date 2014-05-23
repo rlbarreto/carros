@@ -4,7 +4,7 @@
     </ion-header-bar>
     <ion-content>
         <ion-list>
-            <ion-radio data-ng-repeat="fabricante in fabricantes"
+            <ion-radio data-ng-repeat="fabricante in fabricantes | orderBy : 'nome'"
                        data-ng-value="fabricante"
                        data-ng-model="novoCarro.fabricanteTransient"
                        data-ng-click="selecionarFabricante()">

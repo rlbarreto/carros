@@ -81,14 +81,19 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           //if(modalLogin) {
           closeModalLogin();
           //}
-          var meusCarros = CarroService.getMeusCarros();
-          if (meusCarros.length > 0) {
-            logger.debug('indo para o state meusCarros');
-            $state.go('meusCarros');
-          } else {
-            logger.debug('indo para o state meusCarros pelo else');
-            $state.go('meusCarros');
-          }
+          CarroService.getMeusCarros().then(
+              function(carros) {
+                logger.debug(carros);
+                if (carros.length > 0) {
+                  logger.debug('indo para o state meusCarros');
+                  $state.go('meusCarros');
+                } else {
+                  logger.debug('indo para o state meusCarros pelo else');
+                  $state.go('meusCarros');
+                }
+              }
+          );
+
         });
 
         var preencherUsuario = function (tx, results) {
@@ -144,6 +149,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         }).then(function(modal) {
           $scope.modalFabricantes = modal;
         });
+
         $scope.openModalFabricante = function() {
           if ($scope.fabricantes.length == 0) {
             $scope.fabricantes = FabricanteService.getFabricantes();
@@ -166,7 +172,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
             $scope.cadastro.fabricanteSelecionado = 'Fabricante';
           }
           $scope.closeModalFabricantes();
-        }
+        };
 
         $ionicModal.fromTemplateUrl('templates/selectCarro.html', {
           scope: $scope,
@@ -174,6 +180,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         }).then(function(modal) {
           $scope.modalCarro = modal;
         });
+
         $scope.openModalCarro = function(fabricanteSelecionado) {
           if (fabricanteSelecionado) {
             $scope.modalCarro.show();
@@ -198,16 +205,18 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           $scope.modalCarro.remove();
         });
 
-        CarroService.getMeusCarros().then(function (meusCarros) {
-          "use strict";
-          $scope.meusCarros = meusCarros;
-        }).catch(function (err) {
-          "use strict";
-          console.log('ocorreu um erro');
-        }).finally(function () {
-          "use strict";
-          logger.debug('carregou meus carros');
-        });
+        $scope.carregarMeusCarros = function () {
+          CarroService.getMeusCarros().then(function (meusCarros) {
+            "use strict";
+            $scope.meusCarros = meusCarros;
+          }).catch(function (err) {
+            "use strict";
+            console.log('ocorreu um erro ' + err);
+          }).finally(function () {
+            "use strict";
+            logger.debug('carregou meus carros');
+          });
+        }
 
         logger.debug($scope.meusCarros);
 
@@ -226,19 +235,21 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
           var salvarPromise = CarroService.salvarNovoCarro($scope.novoCarro);
           salvarPromise.then(
-              function(err) {
-                LoadingService.hideLoading();
-                logger.error('Ocorreu um erro ao salvar o carro: ' + err);
-
-              },
               function (msg) {
                 logger.debug(msg);
                 $scope.novoCarro = CarroService.getNovoCarro();
-                LoadingService.hideLoading();
+                //LoadingService.hideLoading();
                 $state.go('^.meusCarros')
 
+              },
+              function(err) {
+                //LoadingService.hideLoading();
+                logger.error('Ocorreu um erro ao salvar o carro: ' + err);
+
               }
-          )
+
+          );
+          salvarPromise.finally(LoadingService.hideLoading);
 
         }
 
@@ -272,8 +283,15 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
           $scope.salvarAbastecimento = function (carro, abastecimento) {
 
-            CarroService.salvarAbastecimento(carro, abastecimento);
-            $state.go('^.meuCarro');
+            CarroService.salvarAbastecimento(carro, abastecimento).then(
+                function() {
+                  $state.go('^.meuCarro');
+                }
+            ).catch(
+                function(err) {
+                  logger.error(err.msg);
+                }
+            )
           };
 
           $scope.cancelarAbastecimento = function() {

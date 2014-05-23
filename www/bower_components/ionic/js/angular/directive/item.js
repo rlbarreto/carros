@@ -37,13 +37,15 @@ function($animate, $compile) {
     }],
     scope: true,
     compile: function($element, $attrs) {
-      var isAnchor = angular.isDefined($attrs.href) || angular.isDefined($attrs.ngHref);
+      var isAnchor = angular.isDefined($attrs.href) ||
+        angular.isDefined($attrs.ngHref) ||
+        angular.isDefined($attrs.uiSref);
       var isComplexItem = isAnchor ||
         //Lame way of testing, but we have to know at compile what to do with the element
         /ion-(delete|option|reorder)-button/i.test($element.html());
 
         if (isComplexItem) {
-          var innerElement = angular.element(isAnchor ? ITEM_TPL_CONTENT_ANCHOR : ITEM_TPL_CONTENT);
+          var innerElement = jqLite(isAnchor ? ITEM_TPL_CONTENT_ANCHOR : ITEM_TPL_CONTENT);
           innerElement.append($element.contents());
 
           $element.append(innerElement);

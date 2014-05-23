@@ -3,7 +3,7 @@
  * @name ionNavView
  * @module ionic
  * @restrict E
- * @codepen HjnFx
+ * @codepen odqCz
  *
  * @description
  * As a user navigates throughout your app, Ionic is able to keep track of their
@@ -168,7 +168,7 @@ function( $ionicViewService,   $state,   $compile,   $controller,   $animate) {
             return element.append(initialView);
           }
 
-          var newElement = angular.element('<div></div>').html(locals.$template).contents();
+          var newElement = jqLite('<div></div>').html(locals.$template).contents();
           var viewRegisterData = renderer().register(newElement);
 
           // Remove existing content

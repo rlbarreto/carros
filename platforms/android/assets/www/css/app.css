@@ -28,7 +28,18 @@
 
 .button-footer {
     height:100%;
-    width:98%
+    width:98%;
+    font-size: 1.5em !important;
+}
+
+.button-footer.ion-checkmark-round:before {
+    font-size: 44px !important;
+    color: limegreen;
+}
+
+.button-footer.ion-close-round:before {
+    font-size: 44px !important;
+    color: #cc2311;
 }
 
 .half {

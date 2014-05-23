@@ -141,6 +141,17 @@ angular.module('starter.services', ['ngResource'])
           return CarroResource;
         }
 
+        var formatarDadosCarro = function (carro) {
+          if (carro.abastecimentos) {
+            carro.abastecimentos.forEach(
+                function formatarDataAbastecimento(abastecimento) {
+                  var data = new Date(abastecimento.data);
+                  abastecimento.dataExibicao = new Date(data.getTime() + ( data.getTimezoneOffset() * 60000 ));
+                }
+            )
+          }
+        };
+
         var carroService = {
 
           meusCarros: [],
@@ -161,29 +172,21 @@ angular.module('starter.services', ['ngResource'])
               deferred.resolve(carroService.meusCarros);
               return deferred.promise;
             }
+
             var carrosPromise = getCarroResource().query({userId: UserService.getUsuario()._id}).$promise;
             //var carrosPromise = getCarroResource().$promise;
             carrosPromise.then(
                 function (carros) {
                   console.log('funcionou com o resource');
-                  carroService.meusCarros.splice(0, carroService.meusCarros.length);
-                  carros.forEach(
-                      function (carro) {
-                        carro.abastecimentos.forEach(
-                            function formatarDataAbastecimento(abastecimento) {
-                              var data = new Date(abastecimento.data);
-                              abastecimento.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
-                            }
-                        )
-
-                        carroService.meusCarros.push(carro);
-                        if (carroService.meusCarros.length == carros.length) {
-                          deferred.resolve(carroService.meusCarros);
-                        }
-                      }
-                  );
+                  /*if (carroService.meusCarros) {
+                    carroService.meusCarros.splice(0, carroService.meusCarros.length);
+                  } else {
+                    carroService.meusCarros = [];
+                  }*/
                   carroService.meusCarros = carros;
+                  carroService.meusCarros.forEach(formatarDadosCarro);
                   deferred.resolve(carroService.meusCarros);
+                  return carroService.meusCarros;
                 }
             );
             carrosPromise.catch(
@@ -215,10 +218,11 @@ angular.module('starter.services', ['ngResource'])
             carro.abastecimentos.push({edicao: true});
           },
           salvarAbastecimento: function (carro, abastecimento) {
+            var deferred = $q.defer();
             abastecimento.edicao = false;
             abastecimento.dateOrdenacao = new Date(abastecimento.data);
 
-            getCarroResource().abastecer({id: carro._id}, {abastecimento: abastecimento},
+            getCarroResource().abastecer({id: carro._id}, {abastecimento: abastecimento}).$promise.then(
                 function (meuCarroSalvo) {
                   carro.odometroTotal = meuCarroSalvo.odometroTotal;
                   carro.ultimoAbastecimentoData = meuCarroSalvo.ultimoAbastecimentoData;
@@ -228,8 +232,16 @@ angular.module('starter.services', ['ngResource'])
                   var data = new Date(abastecimentoSalvo.data);
                   abastecimentoSalvo.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
                   carro.abastecimentos.push(abastecimentoSalvo);
+                  deferred.resolve(carro);
+                  return carro;
+                }
+            ).catch(
+                function (err) {
+                  deferred.reject({msgErro: 'Ocorreu um erro ao abastecer ', erro:err});
                 }
             );
+
+            return deferred.promise;
           },
           salvarNovoCarro: function (novoCarro) {
             console.log('userId ' + UserService.getUsuario()._id);
@@ -238,17 +250,24 @@ angular.module('starter.services', ['ngResource'])
               //var carroTransient = novoCarro.carroTransient;
               var fabricanteTransient = novoCarro.fabricanteTransient;
               novoCarro.carro = novoCarro.carroTransient._id;
-              novoCarro.$save(function (err, carro) {
-                if (err) {
-                  deferred.reject(err);
-                }
-                //carroTransient.fabricanteTransient = fabricanteTransient;
-                //carro.carroTransient = carroTransient;
-                //carro.carroTransient.fabricanteTransient = fabricanteTransient;
-                carroService.meusCarros.push(carro);
-                deferred.resolve({sucesso: true});
-                //$scope.selecionarCarro(carro._id);
-              });
+              novoCarro.$save().then(
+                  function (carro) {
+                  //carroTransient.fabricanteTransient = fabricanteTransient;
+                  //carro.carroTransient = carroTransient;
+                  //carro.carroTransient.fabricanteTransient = fabricanteTransient;
+                  formatarDadosCarro(carro);
+                  carroService.meusCarros.push(carro);
+                  deferred.resolve({sucesso: true});
+                  //$scope.selecionarCarro(carro._id);
+                  }
+              );
+              //var novoCarroPromise = novoCarroSave.$promise;
+              //novoCarroPromise.then(
+                  //,
+                  //function (err) {
+                  //  deferred.reject(err);
+                 // }
+              //);
             } else {
               deferred.reject(new Error('Não foi selecionado um carro'));
             }

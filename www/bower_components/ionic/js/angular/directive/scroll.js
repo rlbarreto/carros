@@ -10,11 +10,11 @@
  *
  * @param {string=} delegate-handle The handle used to identify this scrollView
  * with {@link ionic.service:$ionicScrollDelegate}.
- * @param {string=} direction Which way to scroll. 'x' or 'y'. Default 'y'.
+ * @param {string=} direction Which way to scroll. 'x' or 'y' or 'xy'. Default 'y'.
  * @param {boolean=} paging Whether to scroll with paging.
  * @param {expression=} on-refresh Called on pull-to-refresh, triggered by an {@link ionic.directive:ionRefresher}.
  * @param {expression=} on-scroll Called whenever the user scrolls.
- * @param {boolean=} scrollbar-x Whether to show the horizontal scrollbar. Default false.
+ * @param {boolean=} scrollbar-x Whether to show the horizontal scrollbar. Default true.
  * @param {boolean=} scrollbar-y Whether to show the vertical scrollbar. Default true.
  * @param {boolean=} zooming Whether to support pinch-to-zoom
  * @param {integer=} min-zoom The smallest zoom amount allowed (default is 0.5)
@@ -31,10 +31,10 @@ function($timeout, $controller, $ionicBind) {
     scope: true,
     controller: function() {},
     compile: function(element, attr) {
-      element.addClass('scroll-view');
+      element.addClass('scroll-view ionic-scroll');
 
       //We cannot transclude here because it breaks element.data() inheritance on compile
-      var innerElement = angular.element('<div class="scroll"></div>');
+      var innerElement = jqLite('<div class="scroll"></div>');
       innerElement.append(element.contents());
       element.append(innerElement);
 
@@ -53,6 +53,7 @@ function($timeout, $controller, $ionicBind) {
           minZoom: '@',
           maxZoom: '@'
         });
+        $scope.direction = $scope.direction || 'y';
 
         if (angular.isDefined($attr.padding)) {
           $scope.$watch($attr.padding, function(newVal) {
