@@ -1,7 +1,7 @@
 <ion-view title="{{meuCarroSelecionado.carroTransient.fabricanteTransient.nome}} - {{meuCarroSelecionado.carroTransient.nome}}" left-buttons="leftButtons">
     <ion-content has-header="true" padding="true">
     <div class="card" ng-show="novoAbastecimento.edicao">
-        <div class="item item-divider">
+        <div class="item item-divider cabecalhoCard">
             Novo abastecimento
         </div>
         <div class="item item-body">
@@ -21,8 +21,8 @@
                     <input type="number" ng-model="novoAbastecimento.volume">
                 </label>
 
-                <label class="item item-input">
-                    <span class="input-label">Tipo de Combustivel:</span>
+                <label class="item item-input item-select">
+                    <div class="input-label">Tipo de Combustivel:</div>
                     <select ng-model="novoAbastecimento.tipo">
                         <option value=""></option>
                         <option value="Gasolina">Gasolina</option>
@@ -44,7 +44,7 @@
         </div>
         <div class="list">
             <div class="card" data-ng-repeat="abastecimento in meuCarroSelecionado.abastecimentos | orderBy:'data':true | limitTo:3">
-                <div class="item item-divider">
+                <div class="item item-divider cabecalhoCard">
                     {{abastecimento.dataExibicao | date:'dd/MM/yyyy'}} - {{abastecimento.tipo}}
                 </div>
                 <div class="item item-body">
@@ -56,17 +56,16 @@
     </div>
     </ion-content>
     <ion-footer-bar class="bar-footer-bottom">
-        <div class="buttons buttons-footer" ng-hide="novoAbastecimento.edicao">
-            <button class="button button-footer" data-ng-click="abastecer(meuCarroSelecionado)" >
+        <div class="buttons-footer" ng-hide="novoAbastecimento.edicao">
+            <div class="button button-footer" data-ng-click="abastecer(meuCarroSelecionado)" >
                 Abastecer
-            </button>
+            </div>
         </div>
-        <div class="buttons buttons-footer" ng-show="novoAbastecimento.edicao">
-            <button class="button button-footer half icon ion-checkmark-round" data-ng-click="salvarAbastecimento(meuCarroSelecionado, novoAbastecimento)">
-            </button>
-
-            <button class="button button-footer half icon ion-close-round" data-ng-click="cancelarAbastecimento()">
-            </button>
+        <div class="buttons-footer" ng-show="novoAbastecimento.edicao">
+            <div class="button button-footer half icon ion-checkmark-round" data-ng-click="salvarAbastecimento(meuCarroSelecionado, novoAbastecimento)">
+            </div>
+            <div class="button button-footer half icon ion-close-round" data-ng-click="cancelarAbastecimento()">
+            </div>
         </div>
     </ion-footer-bar>
 </ion-view>

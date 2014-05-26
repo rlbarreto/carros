@@ -32,8 +32,8 @@ angular.module('starter.services', ['ngResource'])
       }
     })
 
-.factory('DBService',
-    function() {
+.factory('DBService', ['$q',
+    function($q) {
       "use strict";
       var db;
 
@@ -74,7 +74,7 @@ angular.module('starter.services', ['ngResource'])
 
       var dbErrorHandler = function (tx, err) {
         console.log(JSON.stringify(err));
-        alert('DB error: ' + err + '\nCode: ' + err);
+        //alert('DB error: ' + err + '\nCode: ' + err);
       };
 
       var inicializar = function (callback) {
@@ -111,19 +111,33 @@ angular.module('starter.services', ['ngResource'])
         window.localStorage.getItem(nome);
       };
 
+      var armazenarListaCarrosLocal = function(listaCarros, idUsuario) {
+        var dadosArmazenar = {};
+        dadosArmazenar.milliseconds = Date.now();
+        dadosArmazenar.listaCarros = listaCarros;
+        window.localStorage.setItem('listaCarros_' + idUsuario, JSON.stringify(dadosArmazenar));
+      };
+
+      var carregarListaCarrosLocal = function(idUsuario) {
+        return window.localStorage.getItem('listaCarros_' + idUsuario);
+      };
+
       return {
         setValue: setValue,
         getValue: getValue,
         inicializar: inicializar,
         executarInsert: executarInsert,
-        executarSelect: executarSelect
+        executarSelect: executarSelect,
+        carregarListaCarrosLocal: carregarListaCarrosLocal,
+        armazenarListaCarrosLocal: armazenarListaCarrosLocal
       };
 
     }
+  ]
 )
 .factory('CarroService',
-    ['$http', '$resource', '$q', 'UserService','LoadingService',
-      function CarroService($http, $resource, $q, UserService, LoadingService) {
+    ['$http', '$resource', '$q', '$rootScope', 'UserService', 'DBService','LoadingService',
+      function CarroService($http, $resource, $q, $rootScope, UserService, DBService, LoadingService) {
         "use strict";
         //console.log('userId ' + UserService.getUsuario()._id);
 
@@ -165,10 +179,18 @@ angular.module('starter.services', ['ngResource'])
           getNovoCarro: function (userId) {
             return new CarroResource();
           },
-          getMeusCarros: function () {
+          getMeusCarrosLocal: function() {
+            var dadosArmazenados = JSON.parse(DBService.carregarListaCarrosLocal(UserService.getUsuario()._id));
+            carroService.meusCarros = dadosArmazenados.listaCarros;
+            if (!dadosArmazenados || (Date.now() - dadosArmazenados.milliseconds >= 300000)) {
+              $rootScope.$broadcast('carros.timeoutToReload');
+            }
+            return carroService.meusCarros;
+          },
+          getMeusCarros: function (force) {
             var deferred = $q.defer();
             console.log(UserService.getUsuario());
-            if(carroService.meusCarros && carroService.meusCarros.length > 0) {
+            if(!force && carroService.meusCarros && carroService.meusCarros.length > 0) {
               deferred.resolve(carroService.meusCarros);
               return deferred.promise;
             }
@@ -178,13 +200,9 @@ angular.module('starter.services', ['ngResource'])
             carrosPromise.then(
                 function (carros) {
                   console.log('funcionou com o resource');
-                  /*if (carroService.meusCarros) {
-                    carroService.meusCarros.splice(0, carroService.meusCarros.length);
-                  } else {
-                    carroService.meusCarros = [];
-                  }*/
                   carroService.meusCarros = carros;
                   carroService.meusCarros.forEach(formatarDadosCarro);
+                  DBService.armazenarListaCarrosLocal(carros, UserService.getUsuario()._id);
                   deferred.resolve(carroService.meusCarros);
                   return carroService.meusCarros;
                 }

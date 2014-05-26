@@ -206,7 +206,9 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         });
 
         $scope.carregarMeusCarros = function () {
-          CarroService.getMeusCarros().then(function (meusCarros) {
+          $scope.meusCarros = CarroService.getMeusCarrosLocal();
+
+          /*CarroService.getMeusCarros().then(function (meusCarros) {
             "use strict";
             $scope.meusCarros = meusCarros;
           }).catch(function (err) {
@@ -215,7 +217,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           }).finally(function () {
             "use strict";
             logger.debug('carregou meus carros');
-          });
+          });*/
         }
 
         logger.debug($scope.meusCarros);
@@ -264,7 +266,26 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           CarroService.carros.splice(0, CarroService.carros.length);
         }
 
+        $scope.doRefresh = function() {
+          "use strict";
+          CarroService.getMeusCarros(true).then(function (meusCarros) {
+            "use strict";
+            $scope.meusCarros = meusCarros;
+          }).catch(function (err) {
+            "use strict";
+            console.log('ocorreu um erro ' + err);
+          }).finally(function () {
+            "use strict";
+            $scope.$broadcast('scroll.refreshComplete');
+          });
 
+        }
+        $scope.$on('carros.timeoutToReload',
+            function() {
+              "use strict";
+              $scope.doRefresh();
+            }
+        )
       }
     ]
 )

@@ -142,7 +142,6 @@ angular.module('starter.directives', [])
                 $http.post('http://meuscarros.jit.su/api/login', data)
                 .success(
                     function(usuarioCadastrado) {
-                      alert('?? ' + usuarioCadastrado);
                       console.log(usuarioCadastrado);
                       DBService.executarInsert('INSERT INTO usuario VALUES (?, ?)', [usuarioCadastrado._id, JSON.stringify(usuarioCadastrado)], function () { console.log('colocou no database ' + JSON.stringify(data));}, function (error) { console.log('insert failed'); });
                       scope.$emit('eventLoginSuccess', usuarioCadastrado);
@@ -156,12 +155,8 @@ angular.module('starter.directives', [])
                 );
               },
               function erroLoginGoogle(data) {
-                alert('nap foi');
-                alert(data);
               },
               function(data) {
-                alert('terminou');
-                alert(data);
               }
             );
           }

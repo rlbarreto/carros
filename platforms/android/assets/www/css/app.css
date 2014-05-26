@@ -23,13 +23,19 @@
 .buttons-footer {
     height: 95%;
     width: 100%;
+    /*border: 1px solid;*/
+    display: table;
     text-align: center;
 }
 
 .button-footer {
-    height:100%;
-    width:98%;
+    /*height:100%;
+    width: 100;*/
+    /*border: 1px solid;
+    border-color:green;*/
+    display: table-cell;
     font-size: 1.5em !important;
+    vertical-align: middle;
 }
 
 .button-footer.ion-checkmark-round:before {
@@ -42,6 +48,35 @@
     color: #cc2311;
 }
 
-.half {
-    width:48% !important;
+.redicon{
+    color: #cc2311;
 }
+
+.greyicon {
+    color: #D3D3E4;
+}
+
+.bar-assertive {
+    color: #cc2311;
+}
+
+.cabecalhoCard {
+    background-color: #ECF4F8 !important;
+}
+
+/*.bar .title {
+    font-size: 21px !important;
+    line-height: 56px !important;
+}
+
+.bar {
+    height: 56px;
+}
+
+.has-header {
+    top: 56px;
+}
+
+.left-menu-item {
+    height: 56px;
+}*/
