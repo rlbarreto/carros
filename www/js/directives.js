@@ -186,4 +186,53 @@ angular.module('starter.directives', [])
           link: link
       }
     }
+)
+.directive('datePicker',
+    function() {
+      "use strict";
+      var link = function (scope, element, attrs, ngModel) {
+        var picker = element;
+
+        picker.bind('click', function() {
+          event.stopPropagation();
+
+          var myNewDate = Date.parse(picker.val()) || new Date();
+          if(typeof myNewDate === "number") {
+            myNewDate = new Date (myNewDate);
+          }
+
+          var options = {
+            date: myNewDate,
+            mode: 'date'
+          };
+
+          function pad(s) { return (s < 10) ? '0' + s : s; }
+
+          datePicker.show(options, function(date) {
+            if (date != '') {
+
+              var data = new Date(date);
+              var dia = pad(data.getDate());
+              var mes = pad(data.getMonth() + 1);
+              var ano = data.getFullYear();
+
+              picker.val(dia + '/' + mes + '/' + ano);
+              ngModel.$setViewValue(ano + '-' + mes + '-' + dia);
+
+              $timeout(function () { element[0].target.blur() }, 0, false);
+
+            }
+          })
+        })
+
+      }
+
+      return {
+        require: '?ngModel',
+        scope: {
+          ngModel: '='
+        },
+        link: link
+      }
+    }
 );

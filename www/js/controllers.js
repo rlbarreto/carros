@@ -1,8 +1,8 @@
 angular.module('starter.controllers', ['ionic', 'starter.services'])
 
 .controller('MainCtrl',
-    ['$scope', 'DBService', '$state', 'UserService', 'CarroService', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPlatform', '$log',
-      function($scope, DBService, $state, UserService, CarroService, $ionicSideMenuDelegate, $ionicModal, $ionicPlatform, $log) {
+    ['$scope', '$state',  '$ionicSideMenuDelegate', '$ionicModal', '$ionicPlatform', '$log', 'UserService', 'CarroService', 'DBService',
+      function($scope, $state, $ionicSideMenuDelegate, $ionicModal, $ionicPlatform, $log, UserService, CarroService, DBService) {
         "use strict";
 
         var logger = $log;
@@ -59,7 +59,6 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
                 DBService.executarSelect('SELECT ID, BODY FROM usuario', [], preencherUsuario,
                     function(err) {
                       logger.error(err);
-                      alert('erro');
                     }
                 );
               }
@@ -67,13 +66,30 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
         };
 
         $ionicPlatform.ready(inicializar);
-        /*if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-          document.addEventListener('deviceready', inicializar, false);
-        } else {
-          inicializar();
-          isBrowser = true;
-        }*/
 
+        var loadMeusCarros = function () {
+          CarroService.getMeusCarros().then(
+              function(carros) {
+                logger.debug(carros);
+                var irPara;
+                if (carros.length > 0) {
+                  logger.debug('indo para o state meusCarros');
+                  irPara = 'meusCarros';
+                } else {
+                  logger.debug('indo para o state meusCarros pelo else');
+                  irPara = 'cadastrarCarro';
+                }
+                $state.go(irPara, null, {location: "replace"});
+              }
+          );
+        };
+
+        $scope.$on('carros.timeoutToReload',
+            function() {
+              "use strict";
+              loadMeusCarros();
+            }
+        )
 
         $scope.$on('eventLoginSuccess', function(e, data) {
           logger.debug('pegou o evento ' + JSON.stringify(data));
@@ -81,19 +97,39 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
           //if(modalLogin) {
           closeModalLogin();
           //}
-          CarroService.getMeusCarros().then(
+          var carros = CarroService.getMeusCarrosLocal();
+          var irPara;
+          if (carros) {
+            if (carros.length > 0) {
+              CarroService.getMeuCarroSelecionadoLocal().then(
+                  function (carroSelecionado) {
+                    if (carroSelecionado) {
+                      $state.go('meuCarroSelecionado.meuCarro', null, {location:"replace"});
+                    }
+                  }
+              );
+              logger.debug('indo para o state meusCarros');
+              irPara = 'meusCarros';
+            } else {
+              logger.debug('indo para o state meusCarros pelo else');
+              irPara = 'cadastrarCarro';
+            }
+            $state.go(irPara, null, {location: "replace"});
+          }
+          /*CarroService.getMeusCarros().then(
               function(carros) {
                 logger.debug(carros);
+                var irPara;
                 if (carros.length > 0) {
                   logger.debug('indo para o state meusCarros');
-                  $state.go('meusCarros');
+                  irPara = 'meusCarros';
                 } else {
                   logger.debug('indo para o state meusCarros pelo else');
-                  $state.go('meusCarros');
+                  irPara = 'cadastrarCarro';
                 }
+                $state.go(irPara, {location: 'replace'});
               }
-          );
-
+          );*/
         });
 
         var preencherUsuario = function (tx, results) {
@@ -125,8 +161,8 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 )
 
 .controller('CarroCtrl',
-    ['$scope', '$ionicModal', 'CarroService', 'FabricanteService', '$state', '$log', 'LoadingService',
-      function ($scope, $ionicModal, CarroService, FabricanteService, $state, $log, LoadingService) {
+    ['$scope', '$ionicModal', '$state', '$log', 'CarroService', 'FabricanteService', 'LoadingService',
+      function ($scope, $ionicModal, $state, $log, CarroService, FabricanteService, LoadingService) {
 
         var logger = $log;
 
@@ -207,7 +243,6 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
         $scope.carregarMeusCarros = function () {
           $scope.meusCarros = CarroService.getMeusCarrosLocal();
-
           /*CarroService.getMeusCarros().then(function (meusCarros) {
             "use strict";
             $scope.meusCarros = meusCarros;
@@ -257,7 +292,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
 
         $scope.exibirMeuCarro = function (meuCarro) {
           "use strict";
-          CarroService.meuCarroSelecionado = meuCarro;
+          CarroService.setMeuCarroSelecionado(meuCarro);
           $state.go('meuCarroSelecionado.meuCarro');
         }
 
@@ -290,8 +325,8 @@ angular.module('starter.controllers', ['ionic', 'starter.services'])
     ]
 )
 .controller('MeuCarroSelecionadoCtrl',
-    ['$scope', 'CarroService', '$state', '$ionicTabsDelegate',
-        function($scope, CarroService, $state, $ionicTabsDelegate) {
+    ['$scope', '$state', '$ionicTabsDelegate', 'CarroService',
+      function($scope, $state, $ionicTabsDelegate, CarroService) {
           "use strict";
 
           $scope.novoAbastecimento = null;

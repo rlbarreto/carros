@@ -8,7 +8,7 @@
             <form>
                 <label class="item item-input">
                     <span class="input-label">Data:</span>
-                    <input type="date" ng-model="novoAbastecimento.data">
+                    <input type="text" date-picker ng-model="novoAbastecimento.data">
                 </label>
 
                 <label class="item item-input">
@@ -57,8 +57,8 @@
     </ion-content>
     <ion-footer-bar class="bar-footer-bottom">
         <div class="buttons-footer" ng-hide="novoAbastecimento.edicao">
-            <div class="button button-footer" data-ng-click="abastecer(meuCarroSelecionado)" >
-                Abastecer
+            <div class="button button-footer button-abastecer" data-ng-click="abastecer(meuCarroSelecionado)" >
+
             </div>
         </div>
         <div class="buttons-footer" ng-show="novoAbastecimento.edicao">

@@ -122,6 +122,14 @@ angular.module('starter.services', ['ngResource'])
         return window.localStorage.getItem('listaCarros_' + idUsuario);
       };
 
+      var armazenarMeuCarroSelecionadoLocal = function(idCarroSelecionado, idUsuario) {
+        window.localStorage.setItem('idCarroSelecionado_' + idUsuario, idCarroSelecionado);
+      };
+
+      var carregarMeuCarroSelecionadoLocal = function(idUsuario) {
+        return window.localStorage.getItem('idCarroSelecionado_' + idUsuario);
+      };
+
       return {
         setValue: setValue,
         getValue: getValue,
@@ -129,7 +137,9 @@ angular.module('starter.services', ['ngResource'])
         executarInsert: executarInsert,
         executarSelect: executarSelect,
         carregarListaCarrosLocal: carregarListaCarrosLocal,
-        armazenarListaCarrosLocal: armazenarListaCarrosLocal
+        armazenarListaCarrosLocal: armazenarListaCarrosLocal,
+        armazenarMeuCarroSelecionadoLocal: armazenarMeuCarroSelecionadoLocal,
+        carregarMeuCarroSelecionadoLocal: carregarMeuCarroSelecionadoLocal
       };
 
     }
@@ -171,19 +181,41 @@ angular.module('starter.services', ['ngResource'])
           meusCarros: [],
           carros: [],
           meuCarroSelecionado: {},
+          setMeuCarroSelecionado: function(meuCarro) {
+            DBService.armazenarMeuCarroSelecionadoLocal(meuCarro._id, UserService.getUsuario()._id);
+            carroService.meuCarroSelecionado = meuCarro;
+          },
           criarNovoAbastecimento: function() {
             var novoAbastecimento = {edicao: true};
             return novoAbastecimento;
 
           },
           getNovoCarro: function (userId) {
+            getCarroResource();
             return new CarroResource();
+          },
+          getMeuCarroSelecionadoLocal: function() {
+            var deferred = $q.defer();
+            var idCarroSelecionado = DBService.carregarMeuCarroSelecionadoLocal(UserService.getUsuario()._id);
+            if (idCarroSelecionado) {
+              carroService.meusCarros.forEach(function (carro) {
+                if (carro._id === idCarroSelecionado) {
+                  carroService.meuCarroSelecionado = carro;
+                  deferred.resolve(carro);
+                }
+              });
+            } else {
+              deferred.resolve(null);
+            }
+            return deferred.promise;
           },
           getMeusCarrosLocal: function() {
             var dadosArmazenados = JSON.parse(DBService.carregarListaCarrosLocal(UserService.getUsuario()._id));
-            carroService.meusCarros = dadosArmazenados.listaCarros;
             if (!dadosArmazenados || (Date.now() - dadosArmazenados.milliseconds >= 300000)) {
               $rootScope.$broadcast('carros.timeoutToReload');
+              return null;
+            } else {
+              carroService.meusCarros = dadosArmazenados.listaCarros;
             }
             return carroService.meusCarros;
           },

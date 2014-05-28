@@ -4,10 +4,24 @@
         "uninstalled": []
     },
     "config_munge": {
-        "res/xml/config.xml": {
-            "/*": {
-                "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>": 1,
-                "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"com.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>": 1
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" value=\"com.ionic.keyboard.IonicKeyboard\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"DatePickerPlugin\"><param name=\"android-package\" value=\"com.plugin.datepicker.DatePickerPlugin\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
@@ -16,6 +30,9 @@
             "PACKAGE_NAME": "com.navesbarreto.meusCarros"
         },
         "com.ionic.keyboard": {
+            "PACKAGE_NAME": "com.navesbarreto.meusCarros"
+        },
+        "com.plugin.datepicker": {
             "PACKAGE_NAME": "com.navesbarreto.meusCarros"
         }
     },

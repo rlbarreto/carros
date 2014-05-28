@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.navesbarreto.meusCarros" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.navesbarreto.meusCarros" android-versionCode="8"  version="0.0.2b" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Meus Carros</name>
     <description>
         Aplicação para calculo de consumo de combustivel pelo carro.

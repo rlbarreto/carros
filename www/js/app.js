@@ -63,13 +63,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives',
     .state('splash', {
         url: "/",
         templateUrl: "templates/splashScreen.html"
-      })
+      }
+    )
 
     .state('meusCarros', {
       url: "/meusCarros",
       templateUrl: 'templates/meus-carros.html',
       controller: 'CarroCtrl'
     })
+
     .state('cadastrarCarro', {
       url: "/cadastrarCarro",
       templateUrl: 'templates/cadastrar.html',

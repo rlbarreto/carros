@@ -77,6 +77,7 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/js/controllers.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/css/app.css \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/css/index.css \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/img/gas-station-icon.png \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/img/logo.png \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/bower_components/angular-sanitize \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/bower_components/angular \
@@ -432,10 +433,14 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/bower_components/lodash/dist/lodash.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard/www \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard/www/keyboard.js \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker/www \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker/www/android \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker/www/android/DatePicker.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/cadastrar.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/loginPopup.html \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/templates/selectFabricantes.html \

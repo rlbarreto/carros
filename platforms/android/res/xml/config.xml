@@ -1,11 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.navesbarreto.meusCarros" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="8" id="com.navesbarreto.meusCarros" version="0.0.2b" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
+    <feature name="DatePickerPlugin">
+        <param name="android-package" value="com.plugin.datepicker.DatePickerPlugin" />
     </feature>
     <name>Meus Carros</name>
     <description>

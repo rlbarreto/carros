@@ -1,5 +1,9 @@
 /* Your app's CSS, go crazy, make it your own */
 
+body {
+    font-size: 14px;
+}
+
 .ionic-logo {
   display: block;
   margin: 15px auto;
@@ -64,19 +68,9 @@
     background-color: #ECF4F8 !important;
 }
 
-/*.bar .title {
-    font-size: 21px !important;
-    line-height: 56px !important;
+.button-abastecer {
+    background-image: url('../img/gas-station-icon.png');
+    background-position: center;
+    background-size: 32px;
+    background-repeat: no-repeat;
 }
-
-.bar {
-    height: 56px;
-}
-
-.has-header {
-    top: 56px;
-}
-
-.left-menu-item {
-    height: 56px;
-}*/

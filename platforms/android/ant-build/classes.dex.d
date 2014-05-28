@@ -20,6 +20,15 @@
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R$attr.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R$string.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/meusCarros.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$2$1.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$2$2.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$2.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$1.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$DateSetListener.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$1$1.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$2$3.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$TimeSetListener.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard$1.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/dexedLibs/classes-5116f29a0287a640c7640231614f6c00.jar \
