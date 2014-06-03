@@ -1,59 +1,59 @@
 <ion-view title="{{meuCarroSelecionado.carroTransient.fabricanteTransient.nome}} - {{meuCarroSelecionado.carroTransient.nome}}" left-buttons="leftButtons">
-    <ion-content has-header="true" padding="true">
-    <div class="card" ng-show="novoAbastecimento.edicao">
-        <div class="item item-divider cabecalhoCard">
-            Novo abastecimento
+    <ion-content has-header="false" padding="true">
+        <div class="card" ng-show="novoAbastecimento.edicao">
+            <div class="item item-divider cabecalhoCard">
+                Novo abastecimento
+            </div>
+            <div class="item item-body">
+                <form name="abastecer" novalidate="novalidate">
+                    <label class="item item-input">
+                        <span class="input-label">Data:</span>
+                        <input name="dataAbastecimento" type="text" date-picker ng-model="novoAbastecimento.data">
+                    </label>
+
+                    <label class="item item-input" >
+                        <span class="input-label">Odometro:</span>
+                        <input name="odometro" min="{{meuCarroSelecionado.odometroTotal}}" type="number" ng-model="novoAbastecimento.odometro">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Volume:</span>
+                        <input name="volume" type="number" ng-model="novoAbastecimento.volume">
+                    </label>
+
+                    <label class="item item-input item-select">
+                        <div class="input-label">Tipo de Combustivel:</div>
+                        <select name="tipoCombustivel" ng-model="novoAbastecimento.tipo">
+                            <option value=""></option>
+                            <option value="Gasolina">Gasolina</option>
+                            <option value="Etanol">Etanol</option>
+
+                        </select>
+                    </label>
+
+                </form>
+            </div>
         </div>
-        <div class="item item-body">
-            <form>
-                <label class="item item-input">
-                    <span class="input-label">Data:</span>
-                    <input type="text" date-picker ng-model="novoAbastecimento.data">
-                </label>
-
-                <label class="item item-input">
-                    <span class="input-label">Odometro:</span>
-                    <input type="number" ng-model="novoAbastecimento.odometro">
-                </label>
-
-                <label class="item item-input">
-                    <span class="input-label">Volume:</span>
-                    <input type="number" ng-model="novoAbastecimento.volume">
-                </label>
-
-                <label class="item item-input item-select">
-                    <div class="input-label">Tipo de Combustivel:</div>
-                    <select ng-model="novoAbastecimento.tipo">
-                        <option value=""></option>
-                        <option value="Gasolina">Gasolina</option>
-                        <option value="Etanol">Etanol</option>
-
-                    </select>
-                </label>
-
-            </form>
-        </div>
-    </div>
-    <div ng-hide="novoAbastecimento.edicao">
-        <div>
-            <p data-ng-show="meuCarro.anoFabricacao"><label>Ano fabricação/modelo: </label><b>{{meuCarro.anoFabricacao}}/{{meuCarro.anoModelo}}</b></p>
-            <p><label>Tipo combustivel: </label><b>{{meuCarroSelecionado.carroTransient.tipoCombustivel}}</b></p>
-            <p><label>Consumo Medio etanol: </label><b>{{meuCarroSelecionado.consumoMedioEta}}</b></p>
-            <p><label>Consumo Medio gasolina: </label><b>{{meuCarroSelecionado.consumoMedioGas}}</b></p>
-            <p><label>Odometro total: </label><b>{{meuCarroSelecionado.odometroTotal}}</b></p>
-        </div>
-        <div class="list">
-            <div class="card" data-ng-repeat="abastecimento in meuCarroSelecionado.abastecimentos | orderBy:'data':true | limitTo:3">
-                <div class="item item-divider cabecalhoCard">
-                    {{abastecimento.dataExibicao | date:'dd/MM/yyyy'}} - {{abastecimento.tipo}}
-                </div>
-                <div class="item item-body">
-                    <p><label>Volume abastecido: </label>{{abastecimento.volume}}</p>
-                    <p><label>Distancia percorrida: </label>{{abastecimento.distanciaPercorrida}}</p>
+        <div ng-hide="novoAbastecimento.edicao">
+            <div>
+                <p data-ng-show="meuCarro.anoFabricacao"><label>Ano fabricação/modelo: </label><b>{{meuCarro.anoFabricacao}}/{{meuCarro.anoModelo}}</b></p>
+                <p><label>Tipo combustivel: </label><b>{{meuCarroSelecionado.carroTransient.tipoCombustivel}}</b></p>
+                <p><label>Consumo Medio etanol: </label><b>{{meuCarroSelecionado.consumoMedioEta}}</b></p>
+                <p><label>Consumo Medio gasolina: </label><b>{{meuCarroSelecionado.consumoMedioGas}}</b></p>
+                <p><label>Odometro total: </label><b>{{meuCarroSelecionado.odometroTotal}}</b></p>
+            </div>
+            <div class="list" animation="animate">
+                <div class="card" data-ng-repeat="abastecimento in meuCarroSelecionado.abastecimentos | orderBy:'data':true | limitTo:3">
+                    <div class="item item-divider cabecalhoCard">
+                        {{abastecimento.dataExibicao | date:'dd/MM/yyyy'}} - {{abastecimento.tipo}}
+                    </div>
+                    <div class="item item-body">
+                        <p><label>Volume abastecido: </label>{{abastecimento.volume}}</p>
+                        <p><label>Distancia percorrida: </label>{{abastecimento.distanciaPercorrida}}</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </ion-content>
     <ion-footer-bar class="bar-footer-bottom">
         <div class="buttons-footer" ng-hide="novoAbastecimento.edicao">

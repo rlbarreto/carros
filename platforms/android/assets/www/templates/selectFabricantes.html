@@ -1,13 +1,19 @@
 <div class="modal">
     <ion-header-bar title="Fabricantes" align-title="left">
-        <h3>Fabricantes</h3>
+        <form ng-submit="pesquisarFabricante(searchFabricante.nome)" style="width: 90%;">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios7-search placeholder-icon"></i>
+                <input type="search" placeholder="Nome do fabricante" data-ng-model="searchFabricante.nome" >
+            </label>
+        </form>
+        <button class="button button-icon ion-ios7-close" data-ng-click="searchFabricante.nome=''"></button>
     </ion-header-bar>
     <ion-content>
         <ion-list>
-            <ion-radio data-ng-repeat="fabricante in fabricantes | orderBy : 'nome'"
+            <ion-radio data-ng-repeat="fabricante in fabricantes | orderBy : 'nome' | filter: searchFabricante"
                        data-ng-value="fabricante"
                        data-ng-model="novoCarro.fabricanteTransient"
-                       data-ng-click="selecionarFabricante()">
+                       data-ng-click="selecionarFabricante(novoCarro.fabricanteTransient)">
                 {{ fabricante.nome }}
             </ion-radio>
         </ion-list>

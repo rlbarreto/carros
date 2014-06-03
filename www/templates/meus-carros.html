@@ -3,7 +3,7 @@
         <ion-refresher on-refresh="doRefresh()"
                        pulling-text="Puxe para atualizar...">
         </ion-refresher>
-        <span data-ng-repeat="meuCarro in meusCarros" data-ng-click="exibirMeuCarro(meuCarro)" class="card">
+        <span ng-animate="'animate'" data-ng-repeat="meuCarro in meusCarros" data-ng-click="exibirMeuCarro(meuCarro)" class="card">
             <div class="item item-divider cabecalhoCard">
                 {{ meuCarro.carroTransient.fabricanteTransient.nome }} - {{ meuCarro.carroTransient.nome }} - {{meuCarro.carroTransient.motor}}
             </div>

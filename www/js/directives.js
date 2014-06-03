@@ -188,7 +188,7 @@ angular.module('starter.directives', [])
     }
 )
 .directive('datePicker',
-    function() {
+    function($timeout) {
       "use strict";
       var link = function (scope, element, attrs, ngModel) {
         var picker = element;
@@ -216,10 +216,14 @@ angular.module('starter.directives', [])
               var mes = pad(data.getMonth() + 1);
               var ano = data.getFullYear();
 
-              picker.val(dia + '/' + mes + '/' + ano);
-              ngModel.$setViewValue(ano + '-' + mes + '-' + dia);
+              if (!isNaN(dia)) {
+                picker.val(dia + '/' + mes + '/' + ano);
+                ngModel.$setViewValue(ano + '-' + mes + '-' + dia);
 
-              $timeout(function () { element[0].target.blur() }, 0, false);
+                $timeout(function () {
+                  element[0].blur();
+                }, 0, false);
+              }
 
             }
           })
@@ -235,4 +239,57 @@ angular.module('starter.directives', [])
         link: link
       }
     }
-);
+)
+.directive('onValidSubmit', ['$parse', '$timeout', function($parse, $timeout) {
+  return {
+    require: '^form',
+    restrict: 'A',
+    link: function(scope, element, attrs, form) {
+      form.$submitted = false;
+      var fn = $parse(attrs.onValidSubmit);
+      element.on('submit', function(event) {
+        scope.$apply(function() {
+          element.addClass('ng-submitted');
+          form.$submitted = true;
+          if (form.$valid) {
+            if (typeof fn === 'function') {
+              fn(scope, {$event: event});
+            }
+          }
+        });
+      });
+    }
+  }
+
+}])
+.directive('validated', ['$parse', function($parse) {
+  return {
+    restrict: 'AEC',
+    require: '^form',
+    link: function(scope, element, attrs, form) {
+      var inputs = element.find("*");
+      for(var i = 0; i < inputs.length; i++) {
+        (function(input){
+          var attributes = input.attributes;
+          if (attributes.getNamedItem('ng-model') != void 0 && attributes.getNamedItem('name') != void 0) {
+            var field = form[attributes.name.value];
+            if (field != void 0) {
+              scope.$watch(function() {
+                return form.$submitted + "_" + field.$valid;
+              }, function() {
+                if (form.$submitted != true) return;
+                var inp = angular.element(input);
+                if (inp.hasClass('ng-invalid')) {
+                  element.removeClass('has-success');
+                  element.addClass('has-error');
+                } else {
+                  element.removeClass('has-error').addClass('has-success');
+                }
+              });
+            }
+          }
+        })(inputs[i]);
+      }
+    }
+  }
+}]);

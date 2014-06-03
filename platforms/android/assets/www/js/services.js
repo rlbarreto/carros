@@ -146,9 +146,11 @@ angular.module('starter.services', ['ngResource'])
   ]
 )
 .factory('CarroService',
-    ['$http', '$resource', '$q', '$rootScope', 'UserService', 'DBService','LoadingService',
-      function CarroService($http, $resource, $q, $rootScope, UserService, DBService, LoadingService) {
+    ['$http', '$resource', '$q', '$rootScope', '$log', 'UserService', 'DBService','LoadingService',
+      function CarroService($http, $resource, $q, $rootScope, $log, UserService, DBService, LoadingService) {
         "use strict";
+
+        var logger = $log;
         //console.log('userId ' + UserService.getUsuario()._id);
 
         //var api = Restangular.allUrl('api', 'https://meuscarros.jit.su/api');
@@ -159,8 +161,15 @@ angular.module('starter.services', ['ngResource'])
         var CarroResource;
         var getCarroResource = function (){
           if (!CarroResource) {
-            //CarroResource = api.one(UserService.getUsuario()._id).getList('meusCarros');
-            CarroResource = $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params: {query: 'adicionarAbastecimento'}}});
+            try {
+              CarroResource = $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params: {query: 'adicionarAbastecimento'}}});
+            } catch (err) {
+              logger.error()
+              $ionicPopup.alert({
+                title: 'Ops...',
+                template: err.msgErro
+              });
+            }
           }
           return CarroResource;
         }
@@ -346,24 +355,30 @@ angular.module('starter.services', ['ngResource'])
     ]
 )
 .service('FabricanteService',
-    ['$resource', 'LoadingService',
-      function FabricanteService($resource, LoadingService) {
+    ['$resource', '$log', 'LoadingService',
+      function FabricanteService($resource, $log, LoadingService) {
         var fabricanteService = {
-          FabricanteResource: $resource('http://meuscarros.jit.su/api/fabricantes/:id', {id:'@_id'}),
+          FabricanteResource: $resource('http://meuscarros.jit.su/api/fabricantes/:query', {query:'@query'}),
           fabricantes: [],
-          getFabricantes: function () {
+          getFabricantes: function (nomeFabricante) {
             LoadingService.showLoading();
-            var fabricantes = fabricanteService.FabricanteResource.query(
-                function getListaFabricantes() {
+            $log.debug(nomeFabricante);
+            var fabricantesPromise = fabricanteService.FabricanteResource.query({query: 'listar', nomeFabricante: nomeFabricante}).$promise;
+            fabricantesPromise.then(
+                function getListaFabricantes(fabricantes) {
       //        console.log('Carregou os fabricantes');
                   fabricanteService.fabricantes.splice(0, fabricanteService.fabricantes.length);
                   fabricantes.forEach(function (f) {
                     "use strict";
                     fabricanteService.fabricantes.push(f);
                   });
-                  LoadingService.hideLoading();
+                  /*LoadingService.hideLoading();*/
                 }
             );
+            fabricantesPromise.finally(function () {
+                "use strict";
+                LoadingService.hideLoading();
+            })
             return fabricanteService.fabricantes;
 
           }

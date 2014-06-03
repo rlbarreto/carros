@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'starter.filters'],
+angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter.directives', 'starter.filters'],
     function ($httpProvider) {
       // Use x-www-form-urlencoded Content-Type
       $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
