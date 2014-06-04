@@ -25,6 +25,7 @@
 /home/rafael/projetos/meuscarros/platforms/android/res/drawable-xhdpi/screen.png \
 /home/rafael/projetos/meuscarros/platforms/android/res/drawable-land-hdpi/screen.png \
 /home/rafael/projetos/meuscarros/platforms/android/res/values/strings.xml \
+/home/rafael/projetos/meuscarros/platforms/android/res/values/version.xml \
 /home/rafael/projetos/meuscarros/platforms/android/res/drawable-mdpi/ic_action_previous_item.png \
 /home/rafael/projetos/meuscarros/platforms/android/res/drawable-mdpi/ic_action_remove.png \
 /home/rafael/projetos/meuscarros/platforms/android/res/drawable-mdpi/ic_action_next_item.png \
@@ -93,10 +94,13 @@
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/js/services.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/js/constants.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.rjfun.cordova.plugin.admob \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.rjfun.cordova.plugin.admob/www \
+/home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.rjfun.cordova.plugin.admob/www/AdMob.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard/www \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.ionic.keyboard/www/keyboard.js \
 /home/rafael/projetos/meuscarros/platforms/android/assets/www/plugins/com.plugin.datepicker/www \

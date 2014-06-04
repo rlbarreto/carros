@@ -18,6 +18,9 @@ public final class R {
         public static final int iconoriginal=0x7f020004;
         public static final int screen=0x7f020005;
     }
+    public static final class integer {
+        public static final int google_play_services_version=0x7f050000;
+    }
     public static final class string {
         public static final int app_name=0x7f040000;
     }

@@ -1,4 +1,17 @@
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes.dex : \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$ShowAdRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$CreateBannerViewRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$RequestInterstitialAdRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$CreateInterstitialViewRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$1.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$BannerListener.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$DestroyBannerViewRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$BasicListener.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$AdMobRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$RequestAdRunnable.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$InterstitialListener.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/rjfun/cordova/plugin/AdMob$RequestAdBasicRunnable.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard$1.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/ionic/keyboard/IonicKeyboard.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/plugin/datepicker/DatePickerPlugin$2$2.class \
@@ -15,6 +28,7 @@
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R$string.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/BuildConfig.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R$xml.class \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R$integer.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/R.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/com/navesbarreto/meusCarros/MeusCarros.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppChromeClient.class \
@@ -32,3 +46,4 @@
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$1.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$4.class \
 /home/rafael/projetos/meuscarros/platforms/android/ant-build/dexedLibs/classes-5116f29a0287a640c7640231614f6c00.jar \
+/home/rafael/projetos/meuscarros/platforms/android/ant-build/dexedLibs/google-play-services-dada4ce24ab3bfa2d84a49b9b46ccfa7.jar \

@@ -8,8 +8,38 @@ input {
     font-size: 16px;
 }
 
+.has-header {
+    top: 45px;
+}
+
+.bar.bar-positive .title {
+    font-weight: bold;
+}
+
+.bar.bar-dark {
+    background-color: #000000 !important;
+    font-weight: bold;
+}
+
+.item.active, .item.activated, .item-complex.active .item-content, .item-complex.activated .item-content, .item .item-content.active, .item .item-content.activated {
+    border-color: #ccc;
+    background-color: #000000;
+}
+
 .icon.ion-ios7-search.placeholder-icon {
     font-size: 21px;
+}
+
+.black-menu {
+    background-color: #444444 !important;
+    border-color: #dddddd;
+    color: #fff;
+}
+
+/*var qual cor colocar no botões*/
+.left-menu-item {
+    background-color: transparent;
+    color: #fff;
 }
 
 .view, .menu, .pane{

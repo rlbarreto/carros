@@ -178,6 +178,8 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         }
       };
 
+      $scope.searchFabricante = {};
+      $scope.searchCarro = {};
 
       //$scope.fabricanteSelecionado = 'Fabricante';
       //$scope.carroSelecionado = null;
@@ -310,9 +312,16 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         $state.go('meuCarroSelecionado.meuCarro');
       }
 
-      $scope.cancelarPesquisa = function () {
+      $scope.cancelarPesquisaCarro = function () {
         "use strict";
+        $scope.searchCarro.nomeCarro = '';
         CarroService.carros.splice(0, CarroService.carros.length);
+      }
+
+      $scope.cancelarPesquisaFabricante = function () {
+          "use strict";
+        $scope.searchFabricante.nome='';
+        FabricanteService.fabricantes.splice(0);
       }
 
       $scope.doRefresh = function() {
@@ -366,6 +375,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
                 }
             ).catch(
                 function(err) {
+                  $state.go('^.abastecer');
                   logger.error(err.msg);
                   $ionicPopup.alert({
                     title: 'Ops...',

@@ -281,24 +281,29 @@ angular.module('starter.services', ['ngResource'])
             abastecimento.edicao = false;
             abastecimento.dateOrdenacao = new Date(abastecimento.data);
 
-            getCarroResource().abastecer({id: carro._id}, {abastecimento: abastecimento}).$promise.then(
-                function (meuCarroSalvo) {
-                  carro.odometroTotal = meuCarroSalvo.odometroTotal;
-                  carro.ultimoAbastecimentoData = meuCarroSalvo.ultimoAbastecimentoData;
-                  carro.consumoMedioGas = meuCarroSalvo.consumoMedioGas;
-                  carro.consumoMedioEta = meuCarroSalvo.consumoMedioEta;
-                  var abastecimentoSalvo = meuCarroSalvo.abastecimentos[meuCarroSalvo.abastecimentos.length - 1]
-                  var data = new Date(abastecimentoSalvo.data);
-                  abastecimentoSalvo.dataExibicao = new Date( data.getTime() + ( data.getTimezoneOffset() * 60000 ) );
-                  carro.abastecimentos.push(abastecimentoSalvo);
-                  deferred.resolve(carro);
-                  return carro;
-                }
-            ).catch(
-                function (err) {
-                  deferred.reject({msgErro: 'Ocorreu um erro ao abastecer ', erro:err});
-                }
-            );
+            if (carro.odometroTotal < abastecimento.odometro) {
+
+                getCarroResource().abastecer({id: carro._id}, {abastecimento: abastecimento}).$promise.then(
+                    function (meuCarroSalvo) {
+                        carro.odometroTotal = meuCarroSalvo.odometroTotal;
+                        carro.ultimoAbastecimentoData = meuCarroSalvo.ultimoAbastecimentoData;
+                        carro.consumoMedioGas = meuCarroSalvo.consumoMedioGas;
+                        carro.consumoMedioEta = meuCarroSalvo.consumoMedioEta;
+                        var abastecimentoSalvo = meuCarroSalvo.abastecimentos[meuCarroSalvo.abastecimentos.length - 1]
+                        var data = new Date(abastecimentoSalvo.data);
+                        abastecimentoSalvo.dataExibicao = new Date(data.getTime() + ( data.getTimezoneOffset() * 60000 ));
+                        carro.abastecimentos.push(abastecimentoSalvo);
+                        deferred.resolve(carro);
+                        return carro;
+                    }
+                ).catch(
+                    function (err) {
+                        deferred.reject({msgErro: 'Ocorreu um erro ao abastecer ', erro: err});
+                    }
+                );
+            } else {
+                deferred.reject({msgErro: 'O odometro total do carro maior que o informado no abastecimento'});
+            }
 
             return deferred.promise;
           },
