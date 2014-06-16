@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.navesbarreto.meusCarros" android-versionCode="10"  version="0.0.2d" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.navesbarreto.meusCarros" android-versionCode="13"  version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Meus Carros</name>
     <description>
         Aplicação para calculo de consumo de combustivel pelo carro.
@@ -11,6 +11,9 @@
     <feature name="Keyboard">
         <param name="ios-package" value="IonicKeyboard" onload="true" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
     <plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser" />
     <access origin="*" browserOnly="true"/>
     <preference name="fullscreen" value="false" />
@@ -19,7 +22,7 @@
     <preference name="DisallowOverscroll" value="true" />
     <preference name="SplashScreen" value="screen" />
     <preference name="Orientation" value="portrait" />
-    <!--preference name="SplashScreenDelay" value="5000" /-->
+    <preference name="SplashScreenDelay" value="7000" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="FadeSplashScreen" value="true" />
     <preference name="fade-splash-screen-duration" value="5" />

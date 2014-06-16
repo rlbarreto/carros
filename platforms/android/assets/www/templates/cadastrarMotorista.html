@@ -1,0 +1,11 @@
+<ion-view title="Convidar motorista" left-buttons="leftButtons">
+    <div class="bar bar-subheader">
+        <form ng-submit="pesquisar(search)" style="width: 90%;">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios7-search placeholder-icon"></i>
+                <input type="email" placeholder="Email do usuário" data-ng-model="search.emailMotorista" >
+            </label>
+        </form>
+        <button class="button button-icon ion-ios7-close" data-ng-click="cancelarPesquisa()"></button>
+    </div>
+</ion-view>

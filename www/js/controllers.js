@@ -14,11 +14,16 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         $scope.closeSideMenuMeusCarros = function() {
           $scope.toggleLeft();
           $state.go('meusCarros');
-        }
+        };
 
         $scope.closeSideMenuCadastrar = function() {
           $scope.toggleLeft();
           $state.go('cadastrarCarro');
+        };
+
+        $scope.closeSideMenuConvidar = function() {
+          $scope.toggleLeft();
+          $state.go('cadastrarMotorista');
         }
 
         //criando a modal de login
@@ -30,6 +35,11 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         });
         var openModalLogin = function() {
           modalLogin.show();
+          if (navigator && navigator.splashscreen) {
+            setTimeout(function () {
+              navigator.splashscreen.hide();
+            }, 100);
+          }
         };
         var closeModalLogin = function() {
           if (modalLogin) {
@@ -53,6 +63,36 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         });
         var userid;
         var inicializar = function () {
+
+          //admob
+            if( window.plugins && window.plugins.AdMob ) {
+                var admob_ios_key = 'ca-app-pub-6869992474017983/4806197152';
+                var admob_android_key = 'ca-app-pub-6869992474017983/9375997553';
+//                var adId = (navigator.userAgent.indexOf('Android') >=0) ? admob_android_key : admob_ios_key;
+                var adId = admob_android_key;
+                var am = window.plugins.AdMob;
+
+                am.createBannerView(
+                    {
+                        'publisherId': adId,
+                        'adSize': am.AD_SIZE.SMART_BANNER,
+                        'bannerAtTop': false
+                    },
+                    function() {
+                        am.requestAd(
+                            { 'isTesting':false },
+                            function(){
+                                am.showAd( true );
+                            },
+                            function(){ alert('failed to request ad'); }
+                        );
+                    },
+                    function(){ alert('failed to create banner view'); }
+                );
+            } else {
+                alert('AdMob plugin not available/ready.');
+            }
+          //fim do admob
          // isBrowser = !$ionicPlatform.isWebView();
           DBService.inicializar(
               function () {
@@ -80,6 +120,11 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
                   irPara = 'cadastrarCarro';
                 }
                 $state.go(irPara, null, {location: "replace"});
+                if (navigator && navigator.splashscreen) {
+                  setTimeout(function () {
+                    navigator.splashscreen.hide();
+                  }, 100);
+                }
               }
           );
         };
@@ -115,21 +160,13 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
               irPara = 'cadastrarCarro';
             }
             $state.go(irPara, null, {location: "replace"});
+            if (navigator && navigator.splashscreen) {
+              setTimeout(function () {
+                navigator.splashscreen.hide();
+              }, 100);
+
+            }
           }
-          /*CarroService.getMeusCarros().then(
-              function(carros) {
-                logger.debug(carros);
-                var irPara;
-                if (carros.length > 0) {
-                  logger.debug('indo para o state meusCarros');
-                  irPara = 'meusCarros';
-                } else {
-                  logger.debug('indo para o state meusCarros pelo else');
-                  irPara = 'cadastrarCarro';
-                }
-                $state.go(irPara, {location: 'replace'});
-              }
-          );*/
         });
 
         var preencherUsuario = function (tx, results) {
@@ -194,9 +231,9 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
       });
 
       $scope.openModalFabricante = function() {
-        if ($scope.fabricantes.length == 0) {
+        /*if ($scope.fabricantes.length == 0) {
           $scope.fabricantes = FabricanteService.getFabricantes();
-        }
+        }*/
         $scope.modalFabricantes.show();
       };
       $scope.closeModalFabricantes = function() {
@@ -237,7 +274,7 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
         "use strict";
         if (carroSelecionado) {
           $scope.novoCarro.carroTransient = carroSelecionado;
-          $scope.cadastro.carroSelecionado = $scope.novoCarro.carroTransient.nome;
+          $scope.cadastro.carroSelecionado = carroSelecionado.nome;
         }
         $scope.closeModalCarro();
       }
@@ -250,22 +287,12 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
 
       $scope.carregarMeusCarros = function () {
         $scope.meusCarros = CarroService.getMeusCarrosLocal();
-        /*CarroService.getMeusCarros().then(function (meusCarros) {
-         "use strict";
-         $scope.meusCarros = meusCarros;
-         }).catch(function (err) {
-         "use strict";
-         console.log('ocorreu um erro ' + err);
-         }).finally(function () {
-         "use strict";
-         logger.debug('carregou meus carros');
-         });*/
       }
 
       logger.debug($scope.meusCarros);
 
       $scope.novoCarro = CarroService.getNovoCarro();
-      $scope.fabricantes = [];
+      $scope.fabricantes = FabricanteService.fabricantes;
 
       $scope.pesquisarCarros = function (nomeCarro) {
         "use strict";
@@ -353,45 +380,78 @@ angular.module('starter.controllers', ['ionic', 'starter.services', 'starter.con
     ]
 )
 .controller('MeuCarroSelecionadoCtrl',
-    ['$scope', '$state', '$ionicTabsDelegate', '$log', '$ionicPopup', 'CarroService',
-      function($scope, $state, $ionicTabsDelegate, $log, $ionicPopup, CarroService) {
+    ['$scope', '$state', '$ionicTabsDelegate', '$log', '$ionicPopup', '$ionicScrollDelegate', 'CarroService',
+      function($scope, $state, $ionicTabsDelegate, $log, $ionicPopup, $ionicScrollDelegate, CarroService) {
           "use strict";
         var logger = $log;
 
+        $scope.novoAbastecimento = null;
+        $scope.meuCarroSelecionado = CarroService.meuCarroSelecionado;
 
-          $scope.novoAbastecimento = null;
-          $scope.meuCarroSelecionado = CarroService.meuCarroSelecionado;
+        $scope.abastecer = function() {
+          $scope.novoAbastecimento = CarroService.criarNovoAbastecimento();
+          $state.go('^.abastecer');
+          $ionicScrollDelegate.scrollTop();
+        }
 
-          $scope.abastecer = function() {
-            $scope.novoAbastecimento = CarroService.criarNovoAbastecimento();
-            $state.go('^.abastecer');
-          }
+        $scope.salvarAbastecimento = function (carro, abastecimento) {
 
-          $scope.salvarAbastecimento = function (carro, abastecimento) {
+          CarroService.salvarAbastecimento(carro, abastecimento).then(
+              function() {
+                $state.go('^.meuCarro');
+              }
+          ).catch(
+              function(err) {
+                $state.go('^.abastecer');
+                logger.error(err.msg);
+                $ionicPopup.alert({
+                  title: 'Ops...',
+                  template: err.msgErro
+                });
+              }
+          )
+        };
 
-            CarroService.salvarAbastecimento(carro, abastecimento).then(
-                function() {
-                  $state.go('^.meuCarro');
+        $scope.cancelarAbastecimento = function() {
+          $scope.novoAbastecimento = {};
+          $state.go('^.meuCarro');
+        }
+
+          //$state.go('meuCarroSelecionado.meuCarro')
+        }
+
+    ]
+)
+.controller('CadastrarMotoristaController', ['$scope', '$ionicPopup', '$log', 'CadastrarMotoristaService',
+        function ($scope, $ionicPopup, $log, CadastrarMotoristaService) {
+          "use strict";
+
+          var logger = $log;
+
+          $scope.search = {};
+
+          $scope.motoristas = [];
+
+          $scope.pesquisar = function(dadosPesquisar) {
+            CadastrarMotoristaService.pesquisarMotoristas(dadosPesquisar.emailMotorista).then(
+                function(motoristas) {
+                  $scope.motoristas = motoristas;
                 }
             ).catch(
                 function(err) {
-                  $state.go('^.abastecer');
-                  logger.error(err.msg);
+                  logger.error('Ocorreu um erro ao salvar o carro: ' + err);
                   $ionicPopup.alert({
                     title: 'Ops...',
                     template: err.msgErro
                   });
                 }
-            )
+            );
           };
 
-          $scope.cancelarAbastecimento = function() {
-            $scope.novoAbastecimento = {};
-            $state.go('^.meuCarro');
+          $scope.cancelarPesquisa = function () {
+            $scope.search = {};
+            $scope.motoristas = [];
           }
-
-          //$state.go('meuCarroSelecionado.meuCarro')
         }
-
     ]
 );

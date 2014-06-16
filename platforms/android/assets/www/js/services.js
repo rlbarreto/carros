@@ -164,7 +164,7 @@ angular.module('starter.services', ['ngResource'])
             try {
               CarroResource = $resource('https://meuscarros.jit.su/api/:userId/meusCarros/:id/:query', {userId: UserService.getUsuario()._id, id: '@id'}, {abastecer: {method: 'POST', params: {query: 'adicionarAbastecimento'}}});
             } catch (err) {
-              logger.error()
+              logger.error(err)
               $ionicPopup.alert({
                 title: 'Ops...',
                 template: err.msgErro
@@ -229,6 +229,7 @@ angular.module('starter.services', ['ngResource'])
             return carroService.meusCarros;
           },
           getMeusCarros: function (force) {
+            LoadingService.showLoading();
             var deferred = $q.defer();
             console.log(UserService.getUsuario());
             if(!force && carroService.meusCarros && carroService.meusCarros.length > 0) {
@@ -266,7 +267,6 @@ angular.module('starter.services', ['ngResource'])
                 }
             );*/
             //carroService.meusCarros = deferred.promise;
-            LoadingService.showLoading();
             return deferred.promise;
           },
 
@@ -338,9 +338,9 @@ angular.module('starter.services', ['ngResource'])
             return deferred.promise;
           },
           getCarros: function(fabricanteId, nomeCarro) {
-            if (!nomeCarro || nomeCarro.length === 0) {
-              carroService.carros.splice(0, carroService.carros.length);
-            } else {
+            LoadingService.showLoading();
+            carroService.carros.splice(0, carroService.carros.length);
+            if (nomeCarro && nomeCarro.length > 0) {
               var carroPromise = TodosCarrosResource.query({query: 'listarCarros', fabricanteId: fabricanteId, nomeCarro: nomeCarro}).$promise;
               carroPromise.then(
                   function getCarrosFabricante(result) {
@@ -351,6 +351,11 @@ angular.module('starter.services', ['ngResource'])
                     );
                   }
               );
+              carroPromise.finally(
+                  function () {
+                    LoadingService.hideLoading();
+                  }
+              )
             }
           }
         };
@@ -368,7 +373,7 @@ angular.module('starter.services', ['ngResource'])
           getFabricantes: function (nomeFabricante) {
             LoadingService.showLoading();
             $log.debug(nomeFabricante);
-            var fabricantesPromise = fabricanteService.FabricanteResource.query({query: 'listar', nomeFabricante: nomeFabricante}).$promise;
+            var fabricantesPromise = fabricanteService.FabricanteResource.query({nomeFabricante: nomeFabricante}).$promise;
             fabricantesPromise.then(
                 function getListaFabricantes(fabricantes) {
       //        console.log('Carregou os fabricantes');
@@ -425,4 +430,40 @@ angular.module('starter.services', ['ngResource'])
       };
 
     }]
+)
+.service('CadastrarMotoristaService',
+    ['$resource', '$q', '$filter', 'LoadingService',
+        function ($resource, $q, $filter, LoadingService) {
+          "use strict";
+
+          var motoristasResource = $resource('https://meuscarros.jit.su/api/usuarios/:email', {email:'@email'});
+
+          var pesquisarMotoristas = function (email) {
+            LoadingService.showLoading();
+            var deferred = $q.defer();
+            var emailEncoded = $filter('encodeUri')(email);
+
+            var motoristasPromise = motoristasResource.query({email: emailEncoded}).$promise;
+            motoristasPromise.then(
+                function(motoristas) {
+                  deferred.resolve(motoristas);
+                }
+            ).catch(
+                function(err) {
+                  deferred.reject({msgErro: 'Ocorreu um erro ao pesquisar pelo motorista', erro: err});
+                }
+            ).finally(
+                function () {
+                  LoadingService.hideLoading();
+                }
+            );
+
+            return deferred.promise;
+          };
+
+          return {
+            pesquisarMotoristas: pesquisarMotoristas
+          }
+        }
+    ]
 );

@@ -9,17 +9,16 @@
         <button class="button button-icon ion-ios7-close" data-ng-click="cancelarPesquisaCarro()"></button>
     </ion-header-bar>
     <ion-content>
-        <ion-list class="card">
-            <span data-ng-repeat="carro in carros"
-                       data-ng-click="selecionarCarro(carro)">
-                <div class="item item-divider">
+            <div data-ng-repeat="carro in carros"
+                       data-ng-click="selecionarCarro(carro)" class="card">
+                <div class="item item-divider cabecalhoCard">
                     {{ carro.nome }} - {{carro.motor}}
                 </div>
                 <div class="item item-body">
                     <label>Tipo combustivel: </label>{{carro.tipoCombustivel}}
                 </div>
+            </div>
+            <div style="height: 15px"></div>
 
-            </span>
-        </ion-list>
     </ion-content>
 </div>

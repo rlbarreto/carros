@@ -23,13 +23,11 @@
                                 data-ng-click="openModalCarro(novoCarro.fabricanteTransient)"></button>
                     </div>
                     <span data-ng-show="novoCarro.carroTransient.volumeTanque" class="item item-body">
-                        <p>Tanque (litros): {{novoCarro.carroTransient.volumeTanque}}</p>
-
-                        <p>Tipo de combustivel: {{novoCarro.carroTransient.tipoCombustivel}}</p>
-
-                        <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0">Consumo Gasolina: {{novoCarro.carroTransient.consumoMedioGas}}</p>
-
-                        <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0">Consumo Etanol: {{novoCarro.carroTransient.consumoMedioEta}}</p>
+                        <p><label>Motor: </label>{{novoCarro.carroTransient.motor}}</p>
+                        <p><label>Tanque (litros): </label>{{novoCarro.carroTransient.volumeTanque}}</p>
+                        <p><label>Tipo de combustivel: </label>{{novoCarro.carroTransient.tipoCombustivel}}</p>
+                        <p data-ng-show="novoCarro.carroTransient.consumoMedioGas > 0"><label>Consumo Gasolina: </label>{{novoCarro.carroTransient.consumoMedioGas}}</p>
+                        <p data-ng-show="novoCarro.carroTransient.consumoMedioEta > 0"><label>Consumo Etanol: </label>{{novoCarro.carroTransient.consumoMedioEta}}</p>
                     </span>
                 </span>
                 <div data-ng-if="cadastro.carroSelecionado" style="padding-bottom: 40px">
@@ -52,7 +50,7 @@
             </form>
         </div>
     </ion-content>
-    <ion-footer-bar class="bar-footer-bottom">
+    <ion-footer-bar class="bar-footer-bottom hide-on-keyboard-open">
         <div class="buttons-footer">
             <div class="button button-footer icon ion-checkmark-round" data-ng-click="inserirCarro()" >
             </div>

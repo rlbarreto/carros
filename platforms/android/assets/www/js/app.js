@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter.directives', 'starter.filters'],
+angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter.directives', 'starter.filters', 'rt.encodeuri'],
     function ($httpProvider) {
       // Use x-www-form-urlencoded Content-Type
       $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -60,11 +60,11 @@ angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-    .state('splash', {
+    /*.state('splash', {
         url: "/",
         templateUrl: "templates/splashScreen.html"
       }
-    )
+    )*/
 
     .state('meusCarros', {
       url: "/meusCarros",
@@ -77,6 +77,13 @@ angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter
       templateUrl: 'templates/cadastrar.html',
       controller: 'CarroCtrl'
     })
+
+    .state('cadastrarMotorista', {
+        url:"/cadastrarMotorista",
+        templateUrl: 'templates/cadastrarMotorista.html',
+        controller: 'CadastrarMotoristaController'
+      }
+    )
     .state('meuCarroSelecionado', {
         url:"/meuCarroSelecionado",
         templateUrl: 'templates/meuCarroSelecionado.html',
@@ -110,7 +117,15 @@ angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/cadastrarCarro');
 
-});
+})
+.run(function($ionicPlatform) {
+      $ionicPlatform.ready(function () {
+        if (window.cordova) {
+          cordova.plugins && cordova.plugins.Keyboard && cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+      });
+    }
+);
 
