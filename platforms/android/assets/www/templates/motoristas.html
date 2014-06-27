@@ -1,0 +1,26 @@
+<ion-view title="Motoristas" left-buttons="leftButtons" ng-init="carregarMotoristas()">
+    <ion-content>
+
+        <ion-list>
+            <div class="card">
+                <div class="item item-avatar" >
+                    <img ng-src="{{usuario.imagem}}">
+                    <h2>{{usuario.nome}}</h2>
+                </div>
+            </div>
+            <div class="card" ng-repeat="motorista in motoristasAssociados|orderBy:'nome'" rl-hold="showActionSheet(motorista)">
+                <div class="item item-avatar"  >
+                    <img ng-src="{{motorista.imagem}}">
+                    <h2>{{motorista.nome}}</h2>
+                </div>
+            </div>
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-footer-bottom hide-on-keyboard-open">
+        <div class="buttons-footer">
+            <div class="button button-footer half icon ion-person-add" data-ng-click="adicionar()" >
+
+            </div>
+        </div>
+    </ion-footer-bar>
+</ion-view>

@@ -41,6 +41,35 @@ module.exports = [
         "clobbers": [
             "navigator.splashscreen"
         ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.network-information/www/network.js",
+        "id": "org.apache.cordova.network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.network-information/www/Connection.js",
+        "id": "org.apache.cordova.network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
+        "id": "org.apache.cordova.dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.dialogs/www/android/notification.js",
+        "id": "org.apache.cordova.dialogs.notification_android",
+        "merges": [
+            "navigator.notification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -52,6 +81,8 @@ module.exports.metadata =
     "com.phonegap.plugins.PushPlugin": "2.2.0",
     "org.apache.cordova.inappbrowser": "0.5.0",
     "org.apache.cordova.splashscreen": "0.3.1",
+    "org.apache.cordova.network-information": "0.2.9",
+    "org.apache.cordova.dialogs": "0.2.8",
     "com.google.playservices": "17.0.0"
 }
 // BOTTOM OF METADATA

@@ -78,6 +78,10 @@ input {
     text-align: center;
 }
 
+.button-footer.icon::before {
+    font-size: 32px !important;
+}
+
 .button-footer {
     /*height:100%;
     width: 100;*/

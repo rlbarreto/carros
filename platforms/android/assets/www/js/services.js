@@ -32,8 +32,8 @@ angular.module('starter.services', ['ngResource'])
       }
     })
 
-.factory('DBService', ['$q',
-    function($q) {
+.factory('DBService', ['$q', 'CarroConstantes',
+    function($q, CarroConstantes) {
       "use strict";
       var db;
 
@@ -103,13 +103,21 @@ angular.module('starter.services', ['ngResource'])
 
       var setValue = function (nome, valor) {
         //alert('colocando ' + nome + ' '+ valor);
-        window.localStorage.setItem( 'item_name', item_value);
+        window.localStorage.setItem(nome, valor);
         //alert('colocou ');
       };
 
       var getValue = function (nome) {
         window.localStorage.getItem(nome);
       };
+
+      var atualizarVersaoApp = function() {
+        window.localStorage.setItem('versao', CarroConstantes.versao);
+      }
+
+      var carregarVersaoAppArmazenada = function () {
+        return window.localStorage.getItem('versao');
+      }
 
       var armazenarListaCarrosLocal = function(listaCarros, idUsuario) {
         var dadosArmazenar = {};
@@ -139,7 +147,9 @@ angular.module('starter.services', ['ngResource'])
         carregarListaCarrosLocal: carregarListaCarrosLocal,
         armazenarListaCarrosLocal: armazenarListaCarrosLocal,
         armazenarMeuCarroSelecionadoLocal: armazenarMeuCarroSelecionadoLocal,
-        carregarMeuCarroSelecionadoLocal: carregarMeuCarroSelecionadoLocal
+        carregarMeuCarroSelecionadoLocal: carregarMeuCarroSelecionadoLocal,
+        atualizarVersaoApp: atualizarVersaoApp,
+        carregarVersaoAppArmazenada: carregarVersaoAppArmazenada
       };
 
     }
@@ -431,12 +441,15 @@ angular.module('starter.services', ['ngResource'])
 
     }]
 )
-.service('CadastrarMotoristaService',
+.service('MotoristaService',
     ['$resource', '$q', '$filter', 'LoadingService',
         function ($resource, $q, $filter, LoadingService) {
           "use strict";
 
           var motoristasResource = $resource('https://meuscarros.jit.su/api/usuarios/:email', {email:'@email'});
+          var motoristasAssociadosResource = $resource('https://meuscarros.jit.su/api/motoristas/:query', {query: '@query'});
+
+           var motoristasAssociados = [];
 
           var pesquisarMotoristas = function (email) {
             LoadingService.showLoading();
@@ -461,8 +474,80 @@ angular.module('starter.services', ['ngResource'])
             return deferred.promise;
           };
 
+          var listaMotoristasAssociados = function(idUsuario) {
+            LoadingService.showLoading();
+
+            var deferred = $q.defer();
+            var promise = motoristasAssociadosResource.query({query: 'listar', idUsuario: idUsuario}).$promise;
+            promise.then(
+                function(motoristas) {
+                  motoristasAssociados = motoristas
+                  deferred.resolve(motoristasAssociados);
+                }
+            ).catch(
+                function (err) {
+                  deferred.reject({msgErro: 'Ocorreu um erro ao carregar lista de motoristas', erro: err});
+                }
+            ).finally(
+                function() {
+                  LoadingService.hideLoading();
+                }
+            )
+
+            return deferred.promise;
+          };
+
+          var adicionarMotorista = function (owner, motorista) {
+            var deferred = $q.defer();
+            var promise = motoristasAssociadosResource.query({query: 'adicionar', owner: owner, motoristaId: motorista._id}).$promise;
+            promise.then(
+                function (motoristas) {
+                  motoristasAssociados = motoristas;
+                  deferred.resolve(motoristasAssociados);
+                }
+            ).catch(
+                function (err) {
+                  deferred.reject({msgErro: 'Ocorreu um erro ao adicionar o motorista ' + motorista.nome, erro: err});
+                }
+            );
+
+            return deferred.promise;
+
+          };
+
+          var removerMotorista = function (owner, motorista) {
+            var deferred = $q.defer();
+            var promise = motoristasAssociadosResource.delete({query: 'remover', owner: owner, motoristaId: motorista._id}).$promise;
+            promise.then(
+                function (retorno) {
+                  /*$log.debug(retorno);*/
+                  var index = -1;
+                  for (var i = 0; i < motoristasAssociados.length; i++) {
+                    if (motoristasAssociados[i]._id === motorista._id) {
+                      index = i;
+                      break;
+                    }
+                  }
+                  if (index >= 0) {
+                    motoristasAssociados.splice(index, 1);
+                    deferred.resolve(motoristasAssociados);
+                  }
+                }
+            ).catch(
+                function (err) {
+                  deferred.reject({msgErro: 'Ocorreu um erro ao adicionar o motorista ' + motorista.nome, erro: err});
+                }
+            );
+
+            return deferred.promise;
+
+          };
+
           return {
-            pesquisarMotoristas: pesquisarMotoristas
+            pesquisarMotoristas: pesquisarMotoristas,
+            listaMotoristasAssociados: listaMotoristasAssociados,
+            adicionarMotorista: adicionarMotorista,
+            removerMotorista: removerMotorista
           }
         }
     ]

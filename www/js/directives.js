@@ -292,4 +292,45 @@ angular.module('starter.directives', [])
       }
     }
   }
-}]);
+}])
+.directive('rlSwipe', function($ionicGesture) {
+      "use strict";
+      return {
+        restrict: 'A',
+        scope: {
+          rlSwipe: '&'
+        },
+        link: function (scope, elem, attrs) {
+          $ionicGesture.on('swipe',
+              function(e) {
+                e.stopPropagation();
+                scope.rlSwipe();
+              }, elem
+          );
+        }
+      };
+    }
+)
+.directive('rlHold', function($ionicGesture) {
+      "use strict";
+      return {
+        restrict: 'A',
+        scope: {
+          rlHold: '&'
+        },
+        link: function (scope, elem, attrs) {
+          var holdGesture = $ionicGesture.on('hold',
+              function(ev) {
+                scope.$apply(function() {
+                  scope.rlHold();
+                });}
+
+              , elem
+          );
+          scope.$on('$destroy', function() {
+            $ionicGesture.off(holdGesture, 'hold', scope.rlHold);
+          });
+        }
+      };
+    }
+);

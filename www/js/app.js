@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter.directives', 'starter.filters', 'rt.encodeuri'],
+angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter.directives', 'starter.filters', 'rt.encodeuri', 'ngCordova'],
     function ($httpProvider) {
       // Use x-www-form-urlencoded Content-Type
       $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -78,7 +78,14 @@ angular.module('starter', ['ionic', 'ngAnimate', 'starter.controllers', 'starter
       controller: 'CarroCtrl'
     })
 
-    .state('cadastrarMotorista', {
+    .state('motoristas', {
+        url:"/motoristas",
+        templateUrl:'templates/motoristas.html',
+        controller:'MotoristasController'
+      }
+    )
+
+    .state('motoristasCadastrar', {
         url:"/cadastrarMotorista",
         templateUrl: 'templates/cadastrarMotorista.html',
         controller: 'CadastrarMotoristaController'
